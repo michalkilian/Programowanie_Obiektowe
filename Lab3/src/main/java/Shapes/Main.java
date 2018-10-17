@@ -2,16 +2,17 @@ package Shapes;
 
 public class Main {
     public static void main(String[] args) {
-        Square square = new Square(11, "square");
-        square.draw();
+        ListOfShapes listOfShapes = new ListOfShapes();
 
-        Rectangle rec = new Rectangle(13, 6, "rec");
-        rec.draw();
+        listOfShapes.addShape(new Square(3, "mały kwadrat"));
+        listOfShapes.addShape(new Rectangle(13, 6, "prostokącik"));
+        listOfShapes.addShape(new Rectangle(16, 10, "prostokąt"));
 
-        Triangle triangle = new Triangle(11, "tria");
-        triangle.draw();
+        listOfShapes.addShape(new Triangle(11, "tria11"));
+        listOfShapes.addShape(new Triangle(8, "tria8"));
 
-        Circle circle = new Circle(7, "cir");
-        circle.draw();
+        listOfShapes.addShape(new Circle(7, "cir"));
+        listOfShapes.getList();
+        listOfShapes.interactWithList();
     }
 }
