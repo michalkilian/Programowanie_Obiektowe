@@ -1,7 +1,6 @@
 package Micro;
 
 import Micro.Exceptions.*;
-import Micro.MicroDvd;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -26,12 +25,10 @@ public class Main {
         try {
             microDvD.delay(inFile, outFile, delay, fps);
             System.out.println("Subtitles succesfully delayed");
-        }
-        catch (WrongFrameSequenceException | WrongFrameFormatException | WrongLineFormatException | NegativeFrameNumberException |
-        UnknownException e){
+        } catch (WrongFrameSequenceException | WrongFrameFormatException | WrongLineFormatException | NegativeFrameNumberException |
+                UnknownException e) {
             System.out.println(e.getMessage());
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             System.out.println("File can not be opened or does not exist");
         }
 

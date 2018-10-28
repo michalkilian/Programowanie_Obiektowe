@@ -1,15 +1,11 @@
 package Micro;
 
 import Micro.Exceptions.*;
-import com.sun.org.apache.xpath.internal.operations.Neg;
 
 import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by student on 2018-10-23.
- */
 public class MicroDvd {
 
 
@@ -44,20 +40,17 @@ public class MicroDvd {
                 } else if (inFrame < 0) {
                     throw new NegativeFrameNumberException("Negative frame number on line " + lineCounter + '\n' + line);
                 }
-                int frameDelay = delay * fps/ 1000 ;
+                int frameDelay = delay * fps / 1000;
                 inFrame += frameDelay;
                 outFrame += frameDelay;
                 String newLine = "{" + inFrame + "}{" + outFrame + "}" + lineQuote + '\n';
                 writer.append(newLine);
 
-            }
-            catch (WrongFrameSequenceException | NegativeFrameNumberException e){
+            } catch (WrongFrameSequenceException | NegativeFrameNumberException e) {
                 throw e;
-            }
-            catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 throw new WrongFrameFormatException("Wrong frame format on line " + lineCounter + '\n' + line);
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 throw new Micro.Exceptions.UnknownException("Unknown exception on line " + lineCounter + '\n' + line);
             }
 
