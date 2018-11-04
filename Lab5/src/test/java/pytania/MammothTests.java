@@ -10,46 +10,49 @@ import static org.junit.Assert.fail;
 
 public class MammothTests {
 
-        private Mammoth mammoth;
+    private Mammoth mammoth;
 
 
-        @BeforeClass
-        public static void createFile() throws IOException {
-            File file = new File("file.txt");
-            file.createNewFile();
-        }
-        @AfterClass
-        public static void deleteFile() throws IOException{
-            File file = new File("file.txt");
-            file.delete();
-        }
+    @BeforeClass
+    public static void createFile() throws IOException {
+        File file = new File("file.txt");
+        file.createNewFile();
+    }
 
-        @Before
-        public void createMammoth() {
-           this.mammoth = new Mammoth();
-        }
-        //zwykle nie spodziewamy się żadnych wyjątków
-        @Rule public ExpectedException thrown = ExpectedException.none();
+    @AfterClass
+    public static void deleteFile() throws IOException {
+        File file = new File("file.txt");
+        file.delete();
+    }
+
+    @Before
+    public void createMammoth() {
+        this.mammoth = new Mammoth();
+    }
+
+    //zwykle nie spodziewamy się żadnych wyjątków
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
 
-        @Test
-        public void correctFoodTest(){
+    @Test
+    public void correctFoodTest() {
+        mammoth.eat(new Food());
+    }
 
-            mammoth.eat(new Food());
-        }
-
-        @Test (expected=InadequateFoodException.class)
-        public void throwsInadequateFoodException() throws InadequateFoodException {
+    @Test(expected = InadequateFoodException.class)
+    public void throwsInadequateFoodException() throws InadequateFoodException {
         mammoth.eat(new Meat());
     }
 
-        @Test public void throwsInadequateFoodExceptionWithMessage() {
+    @Test
+    public void throwsInadequateFoodExceptionWithMessage() {
         try {
 
             mammoth.eat(new Meat());
-        } catch( InadequateFoodException ex ) {
+        } catch (InadequateFoodException ex) {
             Assert.assertEquals(ex.getMessage(), "I don't like meat");
 
         }
     }
-    }
+}
