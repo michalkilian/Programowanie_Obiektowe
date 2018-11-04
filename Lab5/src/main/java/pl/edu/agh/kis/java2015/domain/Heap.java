@@ -5,12 +5,12 @@ import pl.edu.agh.kis.java2015.domain.exceptions.NoElementsInHeap;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Heap {
+public class Heap<T extends Comparable<T>>{
     private int heapSize = 0;
-    private ArrayList<Double> tab = new ArrayList<>();
+    private ArrayList<T> tab = new ArrayList<>();
 
 
-    public void insert(double value) {
+    public void insert(T value) {
         int currentIndex = heapSize;
         tab.add(value);
         bringHeapCondition(currentIndex);
@@ -19,7 +19,7 @@ public class Heap {
 
     public void bringHeapCondition(int currentIndex) {
         int parentIndex = parentIndex(currentIndex);
-        while (isChildGreaterThanParent(currentIndex, parentIndex)) {
+        while (isChildGreaterThanParent(currentIndex, parentIndex) > 0) {
             swapElements(currentIndex, parentIndex);
             currentIndex = parentIndex;
             parentIndex = parentIndex(currentIndex);
@@ -27,13 +27,13 @@ public class Heap {
     }
 
 
-    public boolean isChildGreaterThanParent(int currentIndex, int parentIndex) {
-        return tab.get(currentIndex) > tab.get(parentIndex);
+    public int isChildGreaterThanParent(int currentIndex, int parentIndex) {
+        return tab.get(currentIndex).compareTo(tab.get(parentIndex));
     }
 
     public void swapElements(int currentIndex, int otherIndex) {
-        Double otherValue = tab.get(otherIndex);
-        Double currentValue = tab.get(currentIndex);
+        T otherValue = tab.get(otherIndex);
+        T currentValue = tab.get(currentIndex);
         tab.set(otherIndex, currentValue);
         tab.set(currentIndex, otherValue);
     }
@@ -48,13 +48,13 @@ public class Heap {
         return heapSize;
     }
 
-    public Double top() {
+    public T top() {
         return tab.get(0);
     }
 
-    public Double extractMax() throws NoElementsInHeap {
+    public T extractMax() throws NoElementsInHeap {
         if (heapSize > 0) {
-            Double max = tab.get(0);
+            T max = tab.get(0);
             swapElements(0, heapSize - 1);
             tab.remove(heapSize - 1);
             heapSize -= 1;
@@ -77,7 +77,7 @@ public class Heap {
         }
     }
 
-    public void replace(double newItem) throws NoElementsInHeap {
+    public void replace(T newItem) throws NoElementsInHeap {
         if (heapSize > 0) {
             tab.set(0, newItem);
             buildHeap();
@@ -85,27 +85,27 @@ public class Heap {
     }
 
 
-    public void heapify(List<Double> list) {
+    public void heapify(List<T> list) {
         tab.addAll(list);
         heapSize += list.size();
         buildHeap();
     }
 
-    public void heapify(double[] array) {
-        for (double x : array) {
+    public void heapify(T[] array) {
+        for (T x : array) {
             tab.add(x);
             heapSize++;
         }
         buildHeap();
     }
 
-    public Heap merge(Heap secondHeap) {
-        Heap mergedHeap = new Heap();
-        for (double x : tab) {
+    public Heap<T> merge(Heap<T> secondHeap) {
+        Heap<T> mergedHeap = new Heap<T>();
+        for (T x : tab) {
             mergedHeap.tab.add(x);
             mergedHeap.heapSize++;
         }
-        for (double x : secondHeap.tab) {
+        for (T x : secondHeap.tab) {
             mergedHeap.tab.add(x);
             mergedHeap.heapSize++;
         }
@@ -114,8 +114,8 @@ public class Heap {
 
     }
 
-    public void meld(Heap secondHeap) {
-        for (double x : secondHeap.tab) {
+    public void meld(Heap<T> secondHeap) {
+        for (T x : secondHeap.tab) {
             insert(x);
         }
     }

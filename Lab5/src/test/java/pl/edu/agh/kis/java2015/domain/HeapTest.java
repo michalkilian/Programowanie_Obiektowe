@@ -11,11 +11,11 @@ import java.util.LinkedList;
 
 public class HeapTest {
 
-    private Heap heap;
+    private Heap<Integer> heap;
 
     @Before
     public void makeHeap() {
-        this.heap = new Heap();
+        this.heap = new Heap<>();
     }
 
 
@@ -132,36 +132,36 @@ public class HeapTest {
     @Test
     public void makeHeapFromArray() {
 
-        double[] array = new double[]{3, 4, 3, 2};
+        Integer[] array = new Integer[]{3, 4, 3, 2};
         heap.heapify(array);
         assertEquals(4, heap.top(), 0.001);
     }
 
     @Test
     public void makeHeapFromLinkedList() {
-        LinkedList<Double> list = new LinkedList<>();
-        list.add(3.0);
-        list.add(4.0);
-        list.add(3.0);
-        list.add(2.0);
+        LinkedList<Integer> list = new LinkedList<>();
+        list.add(3);
+        list.add(4);
+        list.add(3);
+        list.add(2);
         heap.heapify(list);
         assertEquals(4, heap.top(), 0.001);
     }
 
     @Test
     public void makeHeapFromArrayList() {
-        ArrayList<Double> list = new ArrayList<>();
-        list.add(3.0);
-        list.add(4.0);
-        list.add(3.0);
-        list.add(2.0);
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(3);
+        list.add(4);
+        list.add(3);
+        list.add(2);
         heap.heapify(list);
         assertEquals(4, heap.top(), 0.001);
     }
 
     @Test
     public void mergeTwoHeaps_maxFromFirst(){
-        Heap secondHeap = new Heap();
+        Heap<Integer> secondHeap = new Heap<>();
 
         heap.insert(3);
         heap.insert(4);
@@ -173,11 +173,11 @@ public class HeapTest {
         secondHeap.insert(2);
 
         Heap mergedHeap = heap.merge(secondHeap);
-        assertEquals(4, mergedHeap.top(), 0.001);
+        assertEquals(4, mergedHeap.top());
     }
     @Test
     public void mergeTwoHeaps_maxFromSecond(){
-        Heap secondHeap = new Heap();
+        Heap<Integer> secondHeap = new Heap<>();
 
         heap.insert(3);
         heap.insert(4);
@@ -189,12 +189,12 @@ public class HeapTest {
         secondHeap.insert(2);
 
         Heap mergedHeap = heap.merge(secondHeap);
-        assertEquals(6, mergedHeap.top(), 0.001);
+        assertEquals(6, mergedHeap.top());
     }
 
     @Test
     public void meldTwoHeaps_maxFromSecond(){
-        Heap secondHeap = new Heap();
+        Heap<Integer> secondHeap = new Heap<>();
 
         heap.insert(3);
         heap.insert(4);
@@ -208,6 +208,17 @@ public class HeapTest {
         heap.meld(secondHeap);
         assertEquals(6, heap.top(), 0.001);
 
+    }
+
+    @Test
+    public void stringHeapTest(){
+        Heap<String> heap = new Heap<>();
+        heap.insert("a");
+        heap.insert("d");
+        heap.insert("c");
+        heap.insert("b");
+
+        assertEquals("d", heap.top());
     }
 
 }
