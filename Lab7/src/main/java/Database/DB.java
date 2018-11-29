@@ -1,5 +1,7 @@
 package Database;
 
+import javafx.scene.control.Button;
+
 import java.sql.*;
 
 /**
@@ -93,7 +95,7 @@ public class DB{
         }
     }
 
-    public void addBook(String isbn, String title, String author, String year){
+    public void addBook(Book book){
         try {
             connect();
             stmt = conn.createStatement();
@@ -101,10 +103,10 @@ public class DB{
             // Wyciagamy wszystkie pola z kolumny name
             // znajdujące się w tabeli users
             PreparedStatement statement = conn.prepareStatement("INSERT INTO books (isbn, title, author, year)" + "VALUES (?,?,?,?)");
-            statement.setString(1, isbn);
-            statement.setString(2, title);
-            statement.setString(3, author);
-            statement.setString(4, year);
+            statement.setString(1, book.getIsbn());
+            statement.setString(2, book.getTitle());
+            statement.setString(3, book.getAuthor());
+            statement.setString(4, book.getYear());
             statement.executeUpdate();
 
         } catch (SQLException ex) {
@@ -142,10 +144,8 @@ public class DB{
             String title = rs.getString(2);
             String author = rs.getString(3);
             String year = rs.getString(4);
-            System.out.println("ISBN " + isbn);
-            System.out.println("Title " + title);
-            System.out.println("Author " + author);
-            System.out.println("Year " + year +'\n');
+            Book book = new Book(isbn, title, author, year);
+            book.print();
         }
     }
 
