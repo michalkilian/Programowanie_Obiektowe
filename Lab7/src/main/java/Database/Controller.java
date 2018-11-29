@@ -10,6 +10,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.util.ArrayList;
+
 public class Controller {
 
     @FXML
@@ -17,6 +19,18 @@ public class Controller {
 
     @FXML
     private Button connectionButton;
+
+    @FXML
+    private Button addBookButton;
+
+    @FXML
+    private Button searchByISBNButton;
+
+    @FXML
+    private Button searchByAuthorButton;
+
+    @FXML
+    private Button listAllButton;
 
     @FXML
     private Circle connectionStatus;
@@ -32,6 +46,12 @@ public class Controller {
 
     @FXML
     private TextField title;
+
+    @FXML
+    private TextField searchByISBN;
+
+    @FXML
+    private TextField searchByAuthor;
 
     @FXML
     private Pane window;
@@ -51,13 +71,12 @@ public class Controller {
 
 
     @FXML
-    public void testConnection(){
+    public void testConnection() {
         DB db = new DB();
         try {
             db.connect();
             connectionStatus.setFill(Color.GREEN);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             connectionStatus.setFill(Color.RED);
         }
     }
@@ -88,13 +107,46 @@ public class Controller {
         books.add(toAdd);
 
 
+        clearFields();
+
+    }
+
+
+    @FXML
+    public void listAll() {
+        DB db = new DB();
+        ArrayList<Book> bookList = db.getAll();
+        clearFields();
+        books.clear();
+        books.addAll(bookList);
+    }
+
+    @FXML
+    public void listSelectedAuthor() {
+        String surname = searchByAuthor.getText();
+        DB db = new DB();
+        ArrayList<Book> bookList = db.getSelectedAuthor(surname);
+        clearFields();
+        books.clear();
+        books.addAll(bookList);
+    }
+
+    @FXML
+    public void listSelectedISBN() {
+        String isbn_ = searchByISBN.getText();
+        DB db = new DB();
+        ArrayList<Book> bookList = db.getSelectedISBN(isbn_);
+        clearFields();
+        books.clear();
+        books.addAll(bookList);
+    }
+
+    private void clearFields() {
         isbn.setText("");
         title.setText("");
         author.setText("");
         year.setText("");
-
     }
-
 
 
 }
