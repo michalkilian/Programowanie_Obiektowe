@@ -16,7 +16,7 @@ public class DB{
         int numbOfAttempts = 0;
         while (numbOfAttempts < 3) {
             try {
-                Class.forName("com.mysql.jdbc.Driver").newInstance();
+                Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
                 conn =
                         DriverManager.getConnection("jdbc:mysql://mysql.agh.edu.pl/kilian",
                                 "kilian", "v0HhS9XnMy1ACkai");
