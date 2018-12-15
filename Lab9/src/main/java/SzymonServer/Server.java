@@ -5,43 +5,59 @@ package SzymonServer;
  */
 
 
+import SzymonServer.exceptions.WrongCommandException;
+
 import java.io.*;
 import java.net.*;
 
 public class Server {
-    public static void main(String[] args) throws IOException {
+    String login = "szymon";
+    String password = "";
+    int passwordLine = 0;
+    BufferedReader br = null;
+    String [] files = {"plik1", "plik2", "plik3"};
 
+    public Server() {
+        try {
+            ClassLoader classLoader = getClass().getClassLoader();
+            File file = new File(classLoader.getResource("secret.txt").getFile());
+            br = new BufferedReader(new FileReader(file));
+            this.password = br.readLine();
+            this.passwordLine = Integer.parseInt(br.readLine());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        Server server = new Server();
         ServerSocket serverSocket = null;
+        Socket clientSocket = null;
         try {
             serverSocket = new ServerSocket(3000);
         } catch (IOException e) {
             System.out.println("Could not listen on port: 3000");
             System.exit(-1);
         }
+
         while (true) {
-            Socket clientSocket = null;
             try {
                 clientSocket = serverSocket.accept();
             } catch (IOException e) {
-                System.out.println("Accept failed: 3000");
-                System.exit(-1);
+                System.out.println("I/O error: " + e);
             }
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(
-                            clientSocket.getInputStream()));
-            String inputLine;
 
-            inputLine = in.readLine();
-            out.println(inputLine);
+            new SzymonServerThread(clientSocket, server).start();
 
-            out.close();
-            in.close();
-            clientSocket.close();
 
-            serverSocket.close();
         }
-
     }
+
 }
 
