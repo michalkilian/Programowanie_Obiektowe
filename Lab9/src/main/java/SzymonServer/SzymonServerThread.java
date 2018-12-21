@@ -5,61 +5,54 @@ import SzymonServer.exceptions.WrongCommandException;
 import java.io.*;
 import java.net.Socket;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class SzymonServerThread extends Thread {
-    protected Socket socket;
-    protected Server server;
-    protected String id = null;
-    protected String output = "";
+    private Socket socket;
+    private String output = "";
+    private Scanner in;
+    private PrintStream out;
 
-    public SzymonServerThread(Socket clientSocket, Server server) {
+    SzymonServerThread(Socket clientSocket) throws IOException {
+        this(clientSocket.getOutputStream(), clientSocket.getInputStream());
         this.socket = clientSocket;
-        this.server = server;
+
+    }
+
+    private SzymonServerThread(OutputStream output, InputStream input) {
+        in = new Scanner(input);
+        out = new PrintStream(output);
     }
 
     public void run() {
-        InputStream in = null;
-        BufferedReader brinp = null;
-        DataOutputStream out = null;
 
-        try {
-            in = socket.getInputStream();
-            brinp = new BufferedReader(new InputStreamReader(in));
-            out = new DataOutputStream(socket.getOutputStream());
-
-        } catch (IOException e) {
-            return;
-        }
 
         String command = null;
 
-        while (true) {
+        while ((!Thread.currentThread().isInterrupted()) && in.hasNextLine()) {
             try {
-                command = brinp.readLine();
-
-                String command2 = "";
-                if (command.equals("LOGIN")) {
-                    command2 = brinp.readLine();
-                }
+                command = in.nextLine();
                 try {
-                    String[] commandOut = handleCommand(command, command2).split(";");
+                    String[] commandOut = handleCommand(command).split(";");
                     String result = commandOut[0];
                     int commandId = Integer.parseInt(commandOut[1]);
-                    if (result == "success") {
+                    if (result.equals("success")) {
                         switch (commandId) {
                             case 1:
-                                this.id = generateId();
-                                output = this.id;
+                                String id = generateId();
+                                Server.loggedUsers.add(id);
+                                output = id;
                                 break;
                             case 2:
                                 output = "true";
-                                out.writeBytes(output);
+                                out.println(output);
+                                out.close();
                                 socket.close();
                                 return;
                             case 3:
                                 output = "";
-                                for (String s : server.files) {
+                                for (String s : Server.files) {
                                     output += s + ";";
                                 }
                                 break;
@@ -71,36 +64,42 @@ public class SzymonServerThread extends Thread {
                         switch (commandId) {
                             case 0:
                                 output = "Zła nazwa użytkownika";
-                                out.writeBytes(output);
+                                out.println(output);
+                                out.close();
                                 socket.close();
                                 return;
                             case 1:
-                                output = "Złe hasło\nOdległość: " + calculatePasswordDistance(command2.split(";")[1], server);
-                                out.writeBytes(output);
+                                output = "Złe hasło. Odległość: " + calculatePasswordDistance(command.split(" ")[1].split(";")[1]);
+                                out.print(output);
+                                out.close();
                                 socket.close();
                                 return;
                             case 2:
                                 output = "false";
-                                out.writeBytes(output);
+                                out.println(output);
+                                out.close();
                                 socket.close();
                                 return;
                             case 3:
                                 output = "false";
-                                out.writeBytes(output);
+                                out.println(output);
+                                out.close();
                                 socket.close();
                                 return;
                             case 4:
                                 output = "false";
-                                out.writeBytes(output);
+                                out.println(output);
+                                out.close();
                                 socket.close();
                                 return;
                         }
 
                     }
 
-                    out.writeBytes(output);
+                    out.println(output);
                     out.flush();
                 } catch (WrongCommandException e) {
+                    out.close();
                     socket.close();
                     return;
                 }
@@ -113,30 +112,29 @@ public class SzymonServerThread extends Thread {
 
     }
 
-    private int calculatePasswordDistance(String userPassword, Server server) throws WrongCommandException {
-        try {
-            ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(classLoader.getResource("polish-dic.txt").getFile());
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            int counter = 1;
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line == userPassword) {
-                    return server.passwordLine - counter;
-                } else counter += 1;
+    private int calculatePasswordDistance(String userPassword) throws WrongCommandException {
+        String a = userPassword.toLowerCase();
+        String b = Server.password;
+        int[] costs = new int[b.length() + 1];
+        for (int j = 0; j < costs.length; j++)
+            costs[j] = j;
+        for (int i = 1; i <= a.length(); i++) {
+            // j == 0; nw = lev(i - 1, j)
+            costs[0] = i;
+            int nw = i - 1;
+            for (int j = 1; j <= b.length(); j++) {
+                int cj = Math.min(1 + Math.min(costs[j], costs[j - 1]), a.charAt(i - 1) == b.charAt(j - 1) ? nw : nw + 1);
+                nw = costs[j];
+                costs[j] = cj;
             }
-        } catch (FileNotFoundException e) {
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        throw new WrongCommandException("Hasło nie znajduje się w słowniku");
+        return costs[b.length()];
     }
 
     private String getFileContent(String s) throws WrongCommandException {
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(classLoader.getResource("secret.txt").getFile());
+            File file = new File(classLoader.getResource(s).getFile());
             BufferedReader br = new BufferedReader(new FileReader(file));
             return br.readLine();
         } catch (FileNotFoundException e) {
@@ -157,65 +155,77 @@ public class SzymonServerThread extends Thread {
     }
 
 
-    public String handleCommand(String command, String command2) throws WrongCommandException {
+    private String handleCommand(String command) throws WrongCommandException {
         String output = "";
         String comm = "";
-        if(command.split(" ") != null) {
-             comm = command.split(" ")[0];
-        }
-        else {
+        String attributes = "";
+        if (command.split(" ") != null) {
+            comm = command.split(" ")[0];
+        } else {
             comm = command;
         }
-        if (!command2.isEmpty()) {
-            String[] usersData = command2.split(";");
-            if (usersData.length != 2) {
-                throw new WrongCommandException("Błędna komenda");
-            }
-            String username = usersData[0];
-            String userPassword = usersData[1];
 
-            if (username == server.login) {
-                if (userPassword == server.password) {
-                    return "success;1";
-                } else {
-                    return "failure;1";
+        String userId;
+        if (command.split(" ").length >= 2) {
+            userId = command.split(" ")[1];
+            userId = userId.replace("\\s", "");
+        } else {
+            throw new WrongCommandException("Błędna komenda");
+        }
+        switch (comm) {
+            case "LOGIN":
+                try {
+                    String username = userId.split(";")[0];
+                    String userPassword = userId.split(";")[1];
+                    if (username.equals(Server.login)) {
+                        if (userPassword.equals(Server.password)) {
+                            return "success;1";
+                        } else {
+                            return "failure;1";
+                        }
+
+                    } else {
+                        return "failure;0";
+                    }
+                } catch (Exception e) {
+                    throw new WrongCommandException("Błędna komenda");
                 }
 
-            } else {
-                return "failure;0";
-            }
-
-
-        } else {
-            switch (comm) {
-                case "LOGOUT":
-                    if (command.split(" ")[1] == this.id) {
+            case "LOGOUT":
+                System.out.println(Server.loggedUsers);
+                for (String id : Server.loggedUsers) {
+                    if (userId.equals(id)) {
+                        Server.loggedUsers.remove(id);
                         return "success;2";
-                    } else {
-                        return "failure;2";
                     }
-                case "LS":
-                    if (command.split(" ")[1] == this.id) {
+                }
+                return "failure;2";
+
+            case "LS":
+                for (String id : Server.loggedUsers) {
+                    System.out.println(id + ' ' +userId);
+                    if (userId.equals(id)) {
+                        System.out.println("SUCC");
                         return "success;3";
-                    } else {
-                        return "failure;3";
                     }
-                case "GET":
-                    if (command.split(" ")[1] == this.id) {
-                        String filename = command.split(" ")[2];
-                        for (String s : server.files) {
-                            if (s == filename) {
+                }
+                return "failure;3";
+            case "GET":
+                String filename = command.split(" ")[2];
+                for (String id : Server.loggedUsers) {
+                    if (userId.equals(id)) {
+                        for (String s : Server.files) {
+                            if (s.equals(filename)) {
                                 return "success;4";
                             }
                         }
-                        return "failure;4";
-                    } else {
-                        return "failure;4";
                     }
-                default:
-                    throw new WrongCommandException("Błędna komenda");
+                }
+                return "failure;4";
+            default:
+                throw new WrongCommandException("Błędna komenda");
 
-            }
+
         }
     }
 }
