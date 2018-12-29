@@ -24,7 +24,7 @@ public class ROT11 implements Algorithm {
             }
             shifted = false;
         }
-        return noweSlowo + ' ';
+        return noweSlowo;
     }
 
     public String decrypt(String slowo) {
@@ -52,6 +52,6 @@ public class ROT11 implements Algorithm {
             }
             shifted = false;
         }
-        return noweSlowo + ' ';
+        return noweSlowo;
     }
 }

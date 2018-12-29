@@ -13,6 +13,7 @@ public class Cryptographer {
 
             for (String word : tokens) {
                 writer.append(algorithm.crypt(word));
+                writer.append(' ');
             }
             writer.append('\n');
         }
@@ -24,11 +25,14 @@ public class Cryptographer {
         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
         BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
         String line = null;
+
         while ((line = br.readLine()) != null) {
+
             String[] tokens = line.split("\\s+");
 
             for (String word : tokens) {
                 writer.append(algorithm.decrypt(word));
+                writer.append(' ');
             }
             writer.append('\n');
         }
