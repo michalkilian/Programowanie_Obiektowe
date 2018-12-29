@@ -24,6 +24,8 @@ import java.util.ResourceBundle;
 
 public class ClientCreateMeme implements Initializable {
 
+    ActiveUser user;
+
     @FXML
     private StackPane imageStackPane;
 
@@ -34,11 +36,24 @@ public class ClientCreateMeme implements Initializable {
     private Button backButton;
 
     @FXML
+    private Button signInUpButton;
+
+    @FXML
     private Button ownPictureButton;
 
     @FXML
     public void goBackToMenu(ActionEvent event) throws IOException {
         Parent createMemeParent = FXMLLoader.load(getClass().getResource("/ClientMenu.fxml"));
+        Scene createMemeScene = new Scene(createMemeParent);
+
+        Stage window = (Stage)((javafx.scene.Node)event.getSource()).getScene().getWindow();
+        window.setScene(createMemeScene);
+        window.show();
+    }
+
+    @FXML
+    public void goToSignInUp(ActionEvent event) throws IOException {
+        Parent createMemeParent = FXMLLoader.load(getClass().getResource("/ClientSignInUp.fxml"));
         Scene createMemeScene = new Scene(createMemeParent);
 
         Stage window = (Stage)((javafx.scene.Node)event.getSource()).getScene().getWindow();
@@ -117,5 +132,9 @@ public class ClientCreateMeme implements Initializable {
 
             }
         });
+    }
+
+    public void initUser(ActiveUser user) {
+        this.user = user;
     }
 }
