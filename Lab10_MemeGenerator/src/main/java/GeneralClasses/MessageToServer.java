@@ -9,7 +9,7 @@ public class MessageToServer implements Serializable {
     private String password;
     private String autisticPseudo;
 
-    public MessageToServer(String command){
+    public MessageToServer(String command) {
         this.command = command;
     }
 

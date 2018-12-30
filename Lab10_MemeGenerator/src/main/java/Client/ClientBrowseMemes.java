@@ -20,6 +20,15 @@ public class ClientBrowseMemes implements Initializable {
     @FXML
     private Button backButton;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
+
+    public void initUser(ActiveSession user) {
+        this.user = user;
+    }
+
     @FXML
     public void goBackToMenu(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientMenu.fxml"));
@@ -27,7 +36,7 @@ public class ClientBrowseMemes implements Initializable {
         Parent createMemeParent = loader.load();
         Scene createMemeScene = new Scene(createMemeParent);
 
-        Stage window = (Stage)((javafx.scene.Node)event.getSource()).getScene().getWindow();
+        Stage window = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
         window.setScene(createMemeScene);
 
         ClientMenu controller = loader.<ClientMenu>getController();
@@ -47,13 +56,5 @@ public class ClientBrowseMemes implements Initializable {
     public void searchByTag(ActionEvent event) {
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
 
-    }
-
-
-    public void initUser(ActiveSession user) {
-        this.user = user;
-    }
 }

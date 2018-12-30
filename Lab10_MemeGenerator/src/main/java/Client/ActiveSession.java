@@ -15,7 +15,7 @@ public class ActiveSession {
         this.autisticPseudo = autisticPseudo;
     }
 
-    public void sendMessageToServer(MessageToServer message){
+    public void sendMessageToServer(MessageToServer message) {
 
     }
 }

@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ClientMenu implements Initializable{
+public class ClientMenu implements Initializable {
 
     ActiveSession user;
 
@@ -23,39 +23,9 @@ public class ClientMenu implements Initializable{
     @FXML
     private Button browseButton;
 
-    @FXML
-    public void changeSceneToCreateMeme(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientCreateMeme.fxml"));
-
-        Parent createMemeParent = loader.load();
-        Scene createMemeScene = new Scene(createMemeParent);
-
-        Stage window = (Stage)((javafx.scene.Node)event.getSource()).getScene().getWindow();
-        window.setScene(createMemeScene);
-
-        ClientCreateMeme controller = loader.<ClientCreateMeme>getController();
-        controller.initUser(user);
-        window.show();
-   }
-
-    public void changeSceneToBrowseMemes(ActionEvent event) throws IOException {
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientBrowseMemes.fxml"));
-
-        Parent createMemeParent = loader.load();
-        Scene createMemeScene = new Scene(createMemeParent);
-
-        Stage window = (Stage)((javafx.scene.Node)event.getSource()).getScene().getWindow();
-        window.setScene(createMemeScene);
-
-        ClientBrowseMemes controller = loader.<ClientBrowseMemes>getController();
-        controller.initUser(user);
-        window.show();
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        if (!ActiveSession.connected){
+        if (!ActiveSession.connected) {
             this.user = new ActiveSession();
             ActiveSession.connected = true;
         }
@@ -66,4 +36,36 @@ public class ClientMenu implements Initializable{
     public void initUser(ActiveSession user) {
         this.user = user;
     }
+
+    @FXML
+    public void changeSceneToCreateMeme(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientCreateMeme.fxml"));
+
+        Parent createMemeParent = loader.load();
+        Scene createMemeScene = new Scene(createMemeParent);
+
+        Stage window = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+        window.setScene(createMemeScene);
+
+        ClientCreateMeme controller = loader.<ClientCreateMeme>getController();
+        controller.initUser(user);
+        window.show();
+    }
+
+    public void changeSceneToBrowseMemes(ActionEvent event) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientBrowseMemes.fxml"));
+
+        Parent createMemeParent = loader.load();
+        Scene createMemeScene = new Scene(createMemeParent);
+
+        Stage window = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+        window.setScene(createMemeScene);
+
+        ClientBrowseMemes controller = loader.<ClientBrowseMemes>getController();
+        controller.initUser(user);
+        window.show();
+    }
+
+
 }

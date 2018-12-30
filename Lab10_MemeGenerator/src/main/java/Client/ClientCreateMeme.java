@@ -58,6 +58,38 @@ public class ClientCreateMeme implements Initializable {
     @FXML
     private Button ownPictureButton;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        ClassLoader classLoader = getClass().getClassLoader();
+
+        File folder = new File(classLoader.getResource("sampleMemes").getFile());
+        File[] listOfFiles = folder.listFiles();
+        TilePane tilePane = new TilePane();
+        tilePane.setHgap(5);
+        tilePane.setVgap(5);
+        tilePane.setMaxWidth(200);
+
+        for (int i = 0; i < listOfFiles.length; ++i) {
+            Image image = new Image(listOfFiles[i].toURI().toString());
+            MyImageView imageView = new MyImageView(image);
+            imageView.setImagePath(listOfFiles[i].toURI().toString());
+            imageView.setFitHeight(200);
+            imageView.setFitWidth(190);
+            imageView.setPreserveRatio(true);
+            tilePane.getChildren().addAll(imageView);
+            addEventToImageView(imageView);
+
+        }
+
+        imageSlider.setContent(tilePane);
+
+    }
+
+    public void initUser(ActiveSession user) {
+        this.user = user;
+    }
+
     @FXML
     public void goBackToMenu(ActionEvent event) throws IOException {
 //        Parent createMemeParent = FXMLLoader.load(getClass().getResource("/ClientMenu.fxml"));
@@ -72,7 +104,7 @@ public class ClientCreateMeme implements Initializable {
         Parent createMemeParent = loader.load();
         Scene createMemeScene = new Scene(createMemeParent);
 
-        Stage window = (Stage)((javafx.scene.Node)event.getSource()).getScene().getWindow();
+        Stage window = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
         window.setScene(createMemeScene);
 
         ClientMenu controller = loader.<ClientMenu>getController();
@@ -87,7 +119,7 @@ public class ClientCreateMeme implements Initializable {
         Parent createMemeParent = loader.load();
         Scene createMemeScene = new Scene(createMemeParent);
 
-        Stage window = (Stage)((javafx.scene.Node)event.getSource()).getScene().getWindow();
+        Stage window = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
         window.setScene(createMemeScene);
 
         ClientSignInUp controller = loader.<ClientSignInUp>getController();
@@ -117,34 +149,6 @@ public class ClientCreateMeme implements Initializable {
     }
 
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-        ClassLoader classLoader = getClass().getClassLoader();
-
-        File folder = new File(classLoader.getResource("sampleMemes").getFile());
-        File[] listOfFiles = folder.listFiles();
-        TilePane tilePane = new TilePane();
-        tilePane.setHgap(5);
-        tilePane.setVgap(5);
-        tilePane.setMaxWidth(200);
-
-        for (int i = 0; i < listOfFiles.length; ++i) {
-            Image image = new Image(listOfFiles[i].toURI().toString());
-            MyImageView imageView = new MyImageView(image);
-            imageView.setImagePath(listOfFiles[i].toURI().toString());
-            imageView.setFitHeight(200);
-            imageView.setFitWidth(190);
-            imageView.setPreserveRatio(true);
-            tilePane.getChildren().addAll(imageView);
-            addEventToImageView(imageView);
-
-        }
-
-        imageSlider.setContent(tilePane);
-
-    }
-
     public void addEventToImageView(ImageView image) {
         image.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
@@ -166,10 +170,7 @@ public class ClientCreateMeme implements Initializable {
         });
     }
 
-    public void initUser(ActiveSession user) {
-        this.user = user;
-    }
-
+    @FXML
     public void createMeme(ActionEvent event) {
         ObservableList<Node> stackPaneContent = imageStackPane.getChildren();
 
@@ -179,7 +180,7 @@ public class ClientCreateMeme implements Initializable {
             String upperText = upperTextField.getText();
             String bottomText = bottomTextField.getText();
             String titleText = titleTextField.getText();
-            if (titleText.equals("")){
+            if (titleText.equals("")) {
                 throw new EmptyFieldException();
             }
             String tagText = tagTextField.getText();
@@ -195,8 +196,7 @@ public class ClientCreateMeme implements Initializable {
             user.sendMessageToServer(messageToServer);
 
 
-        }
-        catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Can't Create MEME");
             alert.setHeaderText("Please pick a photo");

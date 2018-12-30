@@ -15,7 +15,7 @@ public class MyImageView extends ImageView {
         this.imagePath = imagePath;
     }
 
-    public MyImageView(Image image){
+    public MyImageView(Image image) {
         setImage(image);
 
     }

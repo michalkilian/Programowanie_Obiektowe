@@ -48,6 +48,10 @@ public class ClientSignInUp {
     private PasswordField signInPassword;
 
 
+    public void initUser(ActiveSession user) {
+        this.user = user;
+    }
+
     @FXML
     public void goBackToCreate(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientCreateMeme.fxml"));
@@ -105,7 +109,7 @@ public class ClientSignInUp {
             if (username.equals("") || password.equals("") || passwordConfirmation.equals("") || autisticPseudo.equals("")) {
                 throw new EmptyFieldException();
             }
-            if(!password.equals(passwordConfirmation)){
+            if (!password.equals(passwordConfirmation)) {
                 throw new PasswordsNotMatchingException();
             }
 
@@ -115,8 +119,7 @@ public class ClientSignInUp {
             user.sendMessageToServer(messageToServer);
 
 
-        }
-        catch (PasswordsNotMatchingException e) {
+        } catch (PasswordsNotMatchingException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Can't Sign Up");
             alert.setHeaderText("Passwords Not Matching");
@@ -124,8 +127,7 @@ public class ClientSignInUp {
                 if (rs == ButtonType.OK) {
                 }
             });
-        }
-        catch (EmptyFieldException e) {
+        } catch (EmptyFieldException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Can't Sign Up");
             alert.setHeaderText("Please fill all fields");
@@ -138,7 +140,4 @@ public class ClientSignInUp {
     }
 
 
-    public void initUser(ActiveSession user) {
-        this.user = user;
-    }
 }
