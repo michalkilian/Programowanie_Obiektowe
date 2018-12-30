@@ -13,4 +13,9 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'com.google.guava', name: 'guava', version: '14.0.1'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-junit', version: '2.0.0.0'
+    testCompile group: 'org.loadui', name: 'testFx', version: '3.1.2'
+    testCompile group: 'org.testfx',name: 'testfx-core', version: '4.0.15-alpha'
+    testCompile group: 'org.testfx', name:'testfx-junit', version: '4.0.15-alpha'
 }
