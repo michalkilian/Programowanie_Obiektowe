@@ -1,5 +1,6 @@
 package Client;
 
+import Client.Exceptions.EmptyFieldException;
 import GeneralClasses.Meme;
 import GeneralClasses.MessageToServer;
 import javafx.collections.ObservableList;
@@ -81,11 +82,16 @@ public class ClientCreateMeme implements Initializable {
 
     @FXML
     public void goToSignInUp(ActionEvent event) throws IOException {
-        Parent createMemeParent = FXMLLoader.load(getClass().getResource("/ClientSignInUp.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientSignInUp.fxml"));
+
+        Parent createMemeParent = loader.load();
         Scene createMemeScene = new Scene(createMemeParent);
 
-        Stage window = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+        Stage window = (Stage)((javafx.scene.Node)event.getSource()).getScene().getWindow();
         window.setScene(createMemeScene);
+
+        ClientSignInUp controller = loader.<ClientSignInUp>getController();
+        controller.initUser(user);
         window.show();
     }
 
@@ -174,7 +180,7 @@ public class ClientCreateMeme implements Initializable {
             String bottomText = bottomTextField.getText();
             String titleText = titleTextField.getText();
             if (titleText.equals("")){
-                throw new Exception();
+                throw new EmptyFieldException();
             }
             String tagText = tagTextField.getText();
             String author = user.getAutisticPseudo();
@@ -198,7 +204,7 @@ public class ClientCreateMeme implements Initializable {
                 if (rs == ButtonType.OK) {
                 }
             });
-        } catch (Exception e) {
+        } catch (EmptyFieldException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Can't Create MEME");
             alert.setHeaderText("Please insert a title");
