@@ -13,7 +13,7 @@
       <Button fx:id="backButton" layoutX="709.0" layoutY="536.0" mnemonicParsing="false" onAction="#goBackToMenu" prefHeight="35.0" prefWidth="69.0" text="Back" />
       <ImageView fitHeight="438.0" fitWidth="565.0" layoutX="7.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" />
       <Button fx:id="searchByMemeButton" layoutX="14.0" layoutY="494.0" mnemonicParsing="false" onAction="#searchByMeme" text="Search by meme" />
-      <TextField fx:id="memeNameTextField" layoutX="126.0" layoutY="494.0" promptText="Meme Name" />
+      <TextField fx:id="memeNameTextField" layoutX="126.0" layoutY="494.0" promptText="GeneralClasses.Meme Name" />
       <Button fx:id="searchByTagButton" layoutX="22.0" layoutY="524.0" mnemonicParsing="false" onAction="#searchByTag" text="Search by tag" />
       <Button fx:id="searchByAuthorButton" layoutX="13.0" layoutY="559.0" mnemonicParsing="false" onAction="#searchByAuthor" text="Search by author" />
       <TextField fx:id="tagTextField" layoutX="126.0" layoutY="524.0" promptText="Tag" />

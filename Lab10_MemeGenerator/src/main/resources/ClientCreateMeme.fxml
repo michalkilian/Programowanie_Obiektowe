@@ -9,13 +9,13 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ClientCreateMeme">
    <children>
-      <TextField layoutX="506.0" layoutY="474.0" prefHeight="25.0" prefWidth="272.0" promptText="Upper text" />
-      <TextField layoutX="506.0" layoutY="512.0" prefHeight="25.0" prefWidth="272.0" promptText="Bottom text" />
-      <Button layoutX="263.0" layoutY="474.0" mnemonicParsing="false" prefHeight="114.0" prefWidth="200.0" text="CREATE MEME" />
+      <TextField fx:id="upperTextField" layoutX="506.0" layoutY="474.0" prefHeight="25.0" prefWidth="272.0" promptText="Upper text" />
+      <TextField fx:id="bottomTextField" layoutX="506.0" layoutY="512.0" prefHeight="25.0" prefWidth="272.0" promptText="Bottom text" />
+      <Button fx:id="createMemeButton" layoutX="263.0" layoutY="474.0" mnemonicParsing="false" onAction="#createMeme" prefHeight="114.0" prefWidth="200.0" text="CREATE MEME" />
       <Button fx:id="ownPictureButton" layoutX="14.0" layoutY="474.0" mnemonicParsing="false" onAction="#pickOwnPicture" prefHeight="25.0" prefWidth="183.0" text="Own Picture" />
       <Button fx:id="backButton" layoutX="14.0" layoutY="547.0" mnemonicParsing="false" onAction="#goBackToMenu" prefHeight="35.0" prefWidth="69.0" text="Back" />
-      <TextField layoutX="506.0" layoutY="552.0" prefHeight="25.0" prefWidth="126.0" promptText="Title" />
-      <TextField layoutX="652.0" layoutY="552.0" prefHeight="25.0" prefWidth="126.0" promptText="Tag" />
+      <TextField fx:id="titleTextField" layoutX="506.0" layoutY="552.0" prefHeight="25.0" prefWidth="126.0" promptText="Title" />
+      <TextField fx:id="tagTextField" layoutX="652.0" layoutY="552.0" prefHeight="25.0" prefWidth="126.0" promptText="Tag" />
       <Button fx:id="signInUpButton" layoutX="106.0" layoutY="540.0" mnemonicParsing="false" onAction="#goToSignInUp" prefHeight="50.0" prefWidth="112.0" text="Sign In/Sign Up" />
       <SplitPane dividerPositions="0.2894736842105263" layoutY="1.0" prefHeight="465.0" prefWidth="800.0">
         <items>
