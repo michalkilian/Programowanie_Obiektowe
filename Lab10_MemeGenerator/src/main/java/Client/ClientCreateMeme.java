@@ -1,14 +1,17 @@
 package Client;
 
+import GeneralClasses.Meme;
+import GeneralClasses.MessageToServer;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -24,7 +27,20 @@ import java.util.ResourceBundle;
 
 public class ClientCreateMeme implements Initializable {
 
-    ActiveUser user;
+
+    ActiveSession user;
+
+    @FXML
+    private TextField upperTextField;
+
+    @FXML
+    private TextField bottomTextField;
+
+    @FXML
+    private TextField titleTextField;
+
+    @FXML
+    private TextField tagTextField;
 
     @FXML
     private StackPane imageStackPane;
@@ -43,11 +59,23 @@ public class ClientCreateMeme implements Initializable {
 
     @FXML
     public void goBackToMenu(ActionEvent event) throws IOException {
-        Parent createMemeParent = FXMLLoader.load(getClass().getResource("/ClientMenu.fxml"));
+//        Parent createMemeParent = FXMLLoader.load(getClass().getResource("/ClientMenu.fxml"));
+//        Scene createMemeScene = new Scene(createMemeParent);
+//
+//        Stage window = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+//        window.setScene(createMemeScene);
+//        window.show();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientMenu.fxml"));
+
+        Parent createMemeParent = loader.load();
         Scene createMemeScene = new Scene(createMemeParent);
 
         Stage window = (Stage)((javafx.scene.Node)event.getSource()).getScene().getWindow();
         window.setScene(createMemeScene);
+
+        ClientMenu controller = loader.<ClientMenu>getController();
+        controller.initUser(user);
         window.show();
     }
 
@@ -56,18 +84,18 @@ public class ClientCreateMeme implements Initializable {
         Parent createMemeParent = FXMLLoader.load(getClass().getResource("/ClientSignInUp.fxml"));
         Scene createMemeScene = new Scene(createMemeParent);
 
-        Stage window = (Stage)((javafx.scene.Node)event.getSource()).getScene().getWindow();
+        Stage window = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
         window.setScene(createMemeScene);
         window.show();
     }
 
     @FXML
-    public void pickOwnPicture(ActionEvent event){
+    public void pickOwnPicture(ActionEvent event) {
         FileChooser fc = new FileChooser();
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png"));
         File selectedFile = fc.showOpenDialog(null);
 
-        if(selectedFile != null){
+        if (selectedFile != null) {
 
             Image img = new Image(selectedFile.toURI().toString());
 
@@ -77,8 +105,6 @@ public class ClientCreateMeme implements Initializable {
             mainImageView.setFitHeight(imageStackPane.getHeight());
             imageStackPane.getChildren().clear();
             imageStackPane.getChildren().add(mainImageView);
-
-
 
 
         }
@@ -113,7 +139,7 @@ public class ClientCreateMeme implements Initializable {
 
     }
 
-    public void addEventToImageView(ImageView image){
+    public void addEventToImageView(ImageView image) {
         image.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -134,7 +160,52 @@ public class ClientCreateMeme implements Initializable {
         });
     }
 
-    public void initUser(ActiveUser user) {
+    public void initUser(ActiveSession user) {
         this.user = user;
+    }
+
+    public void createMeme(ActionEvent event) {
+        ObservableList<Node> stackPaneContent = imageStackPane.getChildren();
+
+        try {
+            ImageView imageView = (ImageView) stackPaneContent.get(0);
+            Image memeImage = imageView.getImage();
+            String upperText = upperTextField.getText();
+            String bottomText = bottomTextField.getText();
+            String titleText = titleTextField.getText();
+            if (titleText.equals("")){
+                throw new Exception();
+            }
+            String tagText = tagTextField.getText();
+            String author = user.getAutisticPseudo();
+
+            Meme meme = new Meme(upperText, bottomText, tagText, author, titleText, memeImage);
+
+            MessageToServer messageToServer = new MessageToServer("create");
+            messageToServer.setMeme(meme);
+            if (user.getAutisticPseudo() != null) {
+                messageToServer.setAutisticPseudo(user.getAutisticPseudo());
+            }
+            user.sendMessageToServer(messageToServer);
+
+
+        }
+        catch (IndexOutOfBoundsException e){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Can't Create MEME");
+            alert.setHeaderText("Please pick a photo");
+            alert.showAndWait().ifPresent(rs -> {
+                if (rs == ButtonType.OK) {
+                }
+            });
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Can't Create MEME");
+            alert.setHeaderText("Please insert a title");
+            alert.showAndWait().ifPresent(rs -> {
+                if (rs == ButtonType.OK) {
+                }
+            });
+        }
     }
 }

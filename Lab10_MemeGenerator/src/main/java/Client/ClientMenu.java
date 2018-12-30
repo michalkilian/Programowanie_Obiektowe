@@ -4,23 +4,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Node;
-
 public class ClientMenu implements Initializable{
 
-    ActiveUser user;
+    ActiveSession user;
 
     @FXML
     private Button createButton;
@@ -44,17 +39,31 @@ public class ClientMenu implements Initializable{
    }
 
     public void changeSceneToBrowseMemes(ActionEvent event) throws IOException {
-        Parent createMemeParent = FXMLLoader.load(getClass().getResource("/ClientBrowseMemes.fxml"));
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientBrowseMemes.fxml"));
+
+        Parent createMemeParent = loader.load();
         Scene createMemeScene = new Scene(createMemeParent);
 
         Stage window = (Stage)((javafx.scene.Node)event.getSource()).getScene().getWindow();
         window.setScene(createMemeScene);
+
+        ClientBrowseMemes controller = loader.<ClientBrowseMemes>getController();
+        controller.initUser(user);
         window.show();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.user = new ActiveUser();
+        if (!ActiveSession.connected){
+            this.user = new ActiveSession();
+            ActiveSession.connected = true;
+        }
+
         //TODO: CONNECTING TO SERWER AND GENERATING ACTIVE USER IF USER NOT SET;
+    }
+
+    public void initUser(ActiveSession user) {
+        this.user = user;
     }
 }
