@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,6 +24,9 @@ public class ClientMenu implements Initializable {
     @FXML
     private Button browseButton;
 
+    @FXML
+    private Label pseudoLabel;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if (!ActiveSession.connected) {
@@ -30,11 +34,11 @@ public class ClientMenu implements Initializable {
             ActiveSession.connected = true;
         }
 
-        //TODO: CONNECTING TO SERWER AND GENERATING ACTIVE USER IF USER NOT SET;
     }
 
     public void initUser(ActiveSession user) {
         this.user = user;
+        this.pseudoLabel.setText(user.getAutisticPseudo());
     }
 
     @FXML
