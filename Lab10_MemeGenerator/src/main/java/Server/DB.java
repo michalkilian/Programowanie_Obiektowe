@@ -1,15 +1,17 @@
 package Server;
 
 import GeneralClasses.Meme;
+
 import java.io.*;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class DB{
+public class DB {
     private Connection conn = null;
     private Statement stmt = null;
     private ResultSet rs = null;
+
     public void connect() throws SQLException {
         int numbOfAttempts = 0;
         while (numbOfAttempts < 3) {
@@ -29,21 +31,19 @@ public class DB{
                 // handle any errors
 
 
-
-
             } catch (Exception e) {
                 numbOfAttempts += 1;
                 e.printStackTrace();
             }
         }
-        if (numbOfAttempts == 3){
+        if (numbOfAttempts == 3) {
             throw new SQLException();
         }
 
     }
 
 
-    public ArrayList<Meme> getAll(){
+    public ArrayList<Meme> getAll() {
         ArrayList<Meme> memeList = new ArrayList<>();
         try {
             connect();
@@ -63,7 +63,6 @@ public class DB{
     }
 
 
-
     public ArrayList<Meme> getSelectedTitle(String title) {
         ArrayList<Meme> memeList = new ArrayList<>();
         try {
@@ -72,7 +71,7 @@ public class DB{
 
 
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM memes WHERE title LIKE ?");
-            statement.setString(1, ("%"+title));
+            statement.setString(1, ("%" + title));
             rs = statement.executeQuery();
 
             addMemesFromQueryToList(memeList);
@@ -95,7 +94,7 @@ public class DB{
 
 
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM memes WHERE tag LIKE ?");
-            statement.setString(1, ("%"+tag));
+            statement.setString(1, ("%" + tag));
             rs = statement.executeQuery();
 
             addMemesFromQueryToList(memeList);
@@ -118,7 +117,7 @@ public class DB{
 
 
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM memes WHERE autisticpseudo LIKE ?");
-            statement.setString(1, ("%"+author));
+            statement.setString(1, ("%" + author));
             rs = statement.executeQuery();
 
             addMemesFromQueryToList(memeList);
@@ -133,8 +132,54 @@ public class DB{
         return memeList;
     }
 
+    public String signIn(String username, String passwd) {
+        try {
+            connect();
+            stmt = conn.createStatement();
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM users WHERE username LIKE ?");
+            statement.setString(1, (username));
+            rs = statement.executeQuery();
 
-    public void addMeme(Meme meme){
+            if (checkSigning(passwd)) {
+                return rs.getString(3);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cleanRes();
+        }
+        return null;
+    }
+
+    public boolean signUp(String username, String passwd, String author) {
+        try {
+            connect();
+            stmt = conn.createStatement();
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO users values (?,?,?)");
+            statement.setString(1, (username));
+            statement.setString(2, (author));
+            statement.setString(3, (passwd));
+            rs = statement.executeQuery();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cleanRes();
+        }
+        return false;
+    }
+
+    private boolean checkSigning(String passwd) throws SQLException {
+        rs.next();
+        if (rs.getString(4).equals(passwd)) {
+            return true;
+        }
+        return false;
+    }
+
+
+    public void addMeme(Meme meme) {
         try {
             connect();
             stmt = conn.createStatement();
