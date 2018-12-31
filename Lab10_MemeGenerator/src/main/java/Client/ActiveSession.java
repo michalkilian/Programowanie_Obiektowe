@@ -14,7 +14,7 @@ public class ActiveSession {
 
     public static boolean connected = false;
 
-    private String autisticPseudo;
+    private String autisticPseudo = "";
 
     public String getAutisticPseudo() {
         return autisticPseudo;
@@ -32,12 +32,12 @@ public class ActiveSession {
     }
 
 
-    public void connectToServer(){
+    public void connectToServer() {
         echoSocket = null;
         out = null;
         in = null;
 
-        try{
+        try {
             echoSocket = new Socket("localhost", 9000);
             out = new ObjectOutputStream(echoSocket.getOutputStream());
             in = new ObjectInputStream(echoSocket.getInputStream());

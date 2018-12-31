@@ -159,7 +159,6 @@ public class ClientCreateMeme implements Initializable {
 
                 MyImageView imageView = (MyImageView) event.getSource();
                 pathToFile = imageView.getId();
-                System.out.println(pathToFile);
                 Image img = new Image(imageView.getImagePath());
 
                 ImageView mainImageView = new ImageView(img);

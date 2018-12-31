@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 import java.io.InputStream;
 import java.io.Serializable;
 
-public class Meme {
+public class Meme implements Serializable{
 
     private String upperText;
     private String bottomText;

@@ -1,12 +1,12 @@
 package Server;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.IOException;
+import GeneralClasses.MessageToServer;
+
+import java.io.*;
 import java.net.Socket;
 
 
-public class WorkerRunnable implements Runnable{
+public class WorkerRunnable implements Runnable {
 
     protected Socket clientSocket = null;
 
@@ -16,13 +16,15 @@ public class WorkerRunnable implements Runnable{
 
     public void run() {
         try {
-            InputStream input  = clientSocket.getInputStream();
-            OutputStream output = clientSocket.getOutputStream();
-            output.write("".getBytes());
+            ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
+            ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());
+            MessageToServer messageToServer = (MessageToServer)input.readObject();
             output.close();
             input.close();
         } catch (IOException e) {
             //report exception somewhere.
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
