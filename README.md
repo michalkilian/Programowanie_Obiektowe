@@ -38,7 +38,8 @@ Repozytorium na zajęcia z programowania obiektowego AGH Informatyka semestr 3
  * MultiThread - program wielowątkowy generujący 100 linijek losowych liczb do pliku i wielowątkowo na ich podstawie oblicza wartość
  ### Lab9:
  * EchoServer - prosty serwer odbierający wiadomosć od klienta i odsyłający kopię
- * SzymonServer - klient i serwer zaprojektowany zgodnie (prawie) ze [schematem][schemat].
+ * SzymonServer - klient i serwer zaprojektowany zgodnie (prawie) ze [schematem]( http://home.agh.edu.pl/~sbobek/old/doku.php?id=progobl8#cwiczenia).
+
 ### Lab10_MemeGenerator:
 * klient i serwer
 * klient - GUI - pozwala użytkownikowi na wybranie obrazka z galerii lub dysku i wysłanie go do obróbki na serwer oraz oglądnie obrobionych obrazków
@@ -46,4 +47,4 @@ Repozytorium na zajęcia z programowania obiektowego AGH Informatyka semestr 3
 * inne - logowanie, możliwość wyświetlania części memów z bazy
 ### Kolos1:
 * StringCalculator - zadanie z kolokwium, kalkulator napisów + obsługa wyjątków + testy
-  [schemat]: http://home.agh.edu.pl/~sbobek/old/doku.php?id=progobl8#cwiczenia
+  
