@@ -135,6 +135,10 @@ public class ClientSignInUp {
                 if (rs == ButtonType.OK) {
                 }
             });
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
     }
