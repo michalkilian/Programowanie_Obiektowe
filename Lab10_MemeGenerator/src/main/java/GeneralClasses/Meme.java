@@ -23,6 +23,12 @@ public class Meme {
         this.title = title;
         this.image = image;
     }
+    public Meme(String tag, String author, String title, InputStream image){ //If meme already has upper and bottom text
+        this.tag = tag;
+        this.author = author;
+        this.title = title;
+        this.image = image;
+    }
 
     public String getUpperText() {
         return upperText;
