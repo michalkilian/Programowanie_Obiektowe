@@ -21,8 +21,7 @@ import javafx.scene.layout.TilePane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -30,6 +29,7 @@ public class ClientCreateMeme implements Initializable {
 
 
     ActiveSession user;
+    String pathToFile;
 
     @FXML
     private TextField upperTextField;
@@ -74,6 +74,7 @@ public class ClientCreateMeme implements Initializable {
             Image image = new Image(listOfFiles[i].toURI().toString());
             MyImageView imageView = new MyImageView(image);
             imageView.setImagePath(listOfFiles[i].toURI().toString());
+            imageView.setId(listOfFiles[i].getAbsolutePath());
             imageView.setFitHeight(200);
             imageView.setFitWidth(190);
             imageView.setPreserveRatio(true);
@@ -133,8 +134,10 @@ public class ClientCreateMeme implements Initializable {
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png"));
         File selectedFile = fc.showOpenDialog(null);
 
-        if (selectedFile != null) {
 
+        if (selectedFile != null) {
+            pathToFile = selectedFile.getAbsolutePath();
+            System.out.println(pathToFile);
             Image img = new Image(selectedFile.toURI().toString());
 
             ImageView mainImageView = new ImageView(img);
@@ -155,7 +158,8 @@ public class ClientCreateMeme implements Initializable {
             public void handle(MouseEvent event) {
 
                 MyImageView imageView = (MyImageView) event.getSource();
-
+                pathToFile = imageView.getId();
+                System.out.println(pathToFile);
                 Image img = new Image(imageView.getImagePath());
 
                 ImageView mainImageView = new ImageView(img);
@@ -175,8 +179,7 @@ public class ClientCreateMeme implements Initializable {
         ObservableList<Node> stackPaneContent = imageStackPane.getChildren();
 
         try {
-            ImageView imageView = (ImageView) stackPaneContent.get(0);
-            Image memeImage = imageView.getImage();
+            InputStream is = new FileInputStream(new File(pathToFile));
             String upperText = upperTextField.getText();
             String bottomText = bottomTextField.getText();
             String titleText = titleTextField.getText();
@@ -186,7 +189,7 @@ public class ClientCreateMeme implements Initializable {
             String tagText = tagTextField.getText();
             String author = user.getAutisticPseudo();
 
-            Meme meme = new Meme(upperText, bottomText, tagText, author, titleText, memeImage);
+            Meme meme = new Meme(upperText, bottomText, tagText, author, titleText, is);
 
             MessageToServer messageToServer = new MessageToServer("create");
             messageToServer.setMeme(meme);
@@ -212,6 +215,8 @@ public class ClientCreateMeme implements Initializable {
                 if (rs == ButtonType.OK) {
                 }
             });
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 }

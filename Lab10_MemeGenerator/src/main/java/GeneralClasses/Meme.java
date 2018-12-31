@@ -2,6 +2,7 @@ package GeneralClasses;
 
 import javafx.scene.image.Image;
 
+import java.io.InputStream;
 import java.io.Serializable;
 
 public class Meme {
@@ -11,10 +12,10 @@ public class Meme {
     private String tag;
     private String author;
     private String title;
-    private Image image;
+    private InputStream image;
 
 
-    public Meme(String upperText, String bottomText, String tag, String author, String title, Image image) {
+    public Meme(String upperText, String bottomText, String tag, String author, String title, InputStream image) {
         this.upperText = upperText;
         this.bottomText = bottomText;
         this.tag = tag;
@@ -63,11 +64,11 @@ public class Meme {
         this.title = title;
     }
 
-    public Image getImage() {
+    public InputStream getImage() {
         return image;
     }
 
-    public void setImage(Image image) {
+    public void setImage(InputStream image) {
         this.image = image;
     }
 }
