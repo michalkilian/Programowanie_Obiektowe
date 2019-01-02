@@ -18,4 +18,5 @@ dependencies {
     testCompile group: 'org.loadui', name: 'testFx', version: '3.1.2'
     testCompile group: 'org.testfx',name: 'testfx-core', version: '4.0.15-alpha'
     testCompile group: 'org.testfx', name:'testfx-junit', version: '4.0.15-alpha'
+    compile 'mysql:mysql-connector-java:8.0.13'
 }
