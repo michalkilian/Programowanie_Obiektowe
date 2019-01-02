@@ -168,7 +168,6 @@ public class ClientCreateMeme implements Initializable {
                 imageStackPane.getChildren().clear();
                 imageStackPane.getChildren().add(mainImageView);
 
-
             }
         });
     }
@@ -178,7 +177,8 @@ public class ClientCreateMeme implements Initializable {
         ObservableList<Node> stackPaneContent = imageStackPane.getChildren();
 
         try {
-            InputStream is = new FileInputStream(new File(pathToFile));
+            ImageView imageView = (ImageView) stackPaneContent.get(0);
+            Image image = imageView.getImage();
             String upperText = upperTextField.getText();
             String bottomText = bottomTextField.getText();
             String titleText = titleTextField.getText();
@@ -188,7 +188,7 @@ public class ClientCreateMeme implements Initializable {
             String tagText = tagTextField.getText();
             String author = user.getAutisticPseudo();
 
-            Meme meme = new Meme(upperText, bottomText, tagText, author, titleText, is);
+            Meme meme = new Meme(upperText, bottomText, tagText, author, titleText, image);
 
             MessageToServer messageToServer = new MessageToServer("create");
             messageToServer.setMeme(meme);
@@ -196,30 +196,34 @@ public class ClientCreateMeme implements Initializable {
                 messageToServer.setAutisticPseudo(user.getAutisticPseudo());
             }
             user.sendMessageToServer(messageToServer);
+            createResponseAlert(user.getResponseHead(), user.getResponseBody());
 
 
         } catch (IndexOutOfBoundsException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Can't Create MEME");
-            alert.setHeaderText("Please pick a photo");
-            alert.showAndWait().ifPresent(rs -> {
-                if (rs == ButtonType.OK) {
-                }
-            });
+            createResponseAlert("Can't Create MEME", "Please pick a photo");
+
         } catch (EmptyFieldException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Can't Create MEME");
-            alert.setHeaderText("Please insert a title");
-            alert.showAndWait().ifPresent(rs -> {
-                if (rs == ButtonType.OK) {
-                }
-            });
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+            createResponseAlert("Can't Create MEME", "Please insert a title");
+            return;
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+        clearFields();
+    }
+
+    private void createResponseAlert(String responseHead, String responseBody) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(responseHead);
+        alert.setHeaderText(responseBody);
+        alert.showAndWait().ifPresent(rs -> {
+        });
+    }
+
+    private void clearFields() {
+        this.upperTextField.setText("");
+        this.bottomTextField.setText("");
+        this.titleTextField.setText("");
+        this.tagTextField.setText("");
+        this.imageStackPane.getChildren().clear();
     }
 }

@@ -2,7 +2,6 @@ package Client;
 
 import Client.Exceptions.EmptyFieldException;
 import Client.Exceptions.PasswordsNotMatchingException;
-import GeneralClasses.Meme;
 import GeneralClasses.MessageToServer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,8 +9,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -75,24 +72,21 @@ public class ClientSignInUp {
             String username = signInUsername.getText();
             String password = signInPassword.getText();
             if (username.equals("") || password.equals("")) {
-                throw new Exception();
+                throw new EmptyFieldException();
             }
 
             MessageToServer messageToServer = new MessageToServer("signin");
             messageToServer.setUsername(username);
             messageToServer.setPassword(password);
             user.sendMessageToServer(messageToServer);
+            createResponseAlert(user.getResponseHead(), user.getResponseBody());
 
-
-        } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Can't Sign In");
-            alert.setHeaderText("Please insert login and password");
-            alert.showAndWait().ifPresent(rs -> {
-                if (rs == ButtonType.OK) {
-                }
-            });
+        } catch (EmptyFieldException e) {
+            createResponseAlert("Can't Sign In", "Please insert login and password");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
+        clearFields();
 
     }
 
@@ -117,30 +111,36 @@ public class ClientSignInUp {
             messageToServer.setUsername(username);
             messageToServer.setPassword(password);
             user.sendMessageToServer(messageToServer);
+            createResponseAlert(user.getResponseHead(), user.getResponseBody());
 
 
         } catch (PasswordsNotMatchingException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Can't Sign Up");
-            alert.setHeaderText("Passwords Not Matching");
-            alert.showAndWait().ifPresent(rs -> {
-                if (rs == ButtonType.OK) {
-                }
-            });
+            createResponseAlert("Can't Sign Up", "Passwords Not Matching");
+
         } catch (EmptyFieldException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Can't Sign Up");
-            alert.setHeaderText("Please fill all fields");
-            alert.showAndWait().ifPresent(rs -> {
-                if (rs == ButtonType.OK) {
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+            createResponseAlert("Can't Sign Up", "Please fill all fields");
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+        clearFields();
 
+    }
+
+    private void createResponseAlert(String responseHead, String responseBody) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(responseHead);
+        alert.setHeaderText(responseBody);
+        alert.showAndWait().ifPresent(rs -> {
+        });
+    }
+
+    private void clearFields() {
+        signUpUsername.setText("");
+        signUpAuthorPseudonim.setText("");
+        signUpPassword.setText("");
+        signUpPasswordConfirm.setText("");
+        signInUsername.setText("");
+        signInPassword.setText("");
     }
 
 

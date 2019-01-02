@@ -7,6 +7,11 @@ import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+
+import javax.imageio.ImageIO;
+
 public class DB {
     private Connection conn = null;
     private Statement stmt = null;
@@ -43,7 +48,7 @@ public class DB {
     }
 
 
-    public ArrayList<Meme> getAll() {
+    public ArrayList<Meme> getAll() throws SQLException {
         ArrayList<Meme> memeList = new ArrayList<>();
         try {
             connect();
@@ -52,9 +57,8 @@ public class DB {
             rs = stmt.executeQuery("SELECT * FROM memes");
 
             addMemesFromQueryToList(memeList);
-        } catch (SQLException ex) {
-            // handle any errors
-
+        }  catch (IOException e) {
+            e.printStackTrace();
         } finally {
             // zwalniamy zasoby, które nie będą potrzebne
             cleanRes();
@@ -63,7 +67,7 @@ public class DB {
     }
 
 
-    public ArrayList<Meme> getSelectedTitle(String title) {
+    public ArrayList<Meme> getSelectedTitle(String title) throws SQLException {
         ArrayList<Meme> memeList = new ArrayList<>();
         try {
             connect();
@@ -76,9 +80,8 @@ public class DB {
 
             addMemesFromQueryToList(memeList);
 
-        } catch (SQLException ex) {
-            // handle any errors
-
+        }  catch (IOException e) {
+            e.printStackTrace();
         } finally {
             // zwalniamy zasoby, które nie będą potrzebne
             cleanRes();
@@ -86,7 +89,7 @@ public class DB {
         return memeList;
     }
 
-    public ArrayList<Meme> getSelectedTag(String tag) {
+    public ArrayList<Meme> getSelectedTag(String tag) throws SQLException {
         ArrayList<Meme> memeList = new ArrayList<>();
         try {
             connect();
@@ -99,9 +102,8 @@ public class DB {
 
             addMemesFromQueryToList(memeList);
 
-        } catch (SQLException ex) {
-            // handle any errors
-
+        }  catch (IOException e) {
+            e.printStackTrace();
         } finally {
             // zwalniamy zasoby, które nie będą potrzebne
             cleanRes();
@@ -109,7 +111,7 @@ public class DB {
         return memeList;
     }
 
-    public ArrayList<Meme> getSelectedAuthor(String author) {
+    public ArrayList<Meme> getSelectedAuthor(String author) throws SQLException {
         ArrayList<Meme> memeList = new ArrayList<>();
         try {
             connect();
@@ -122,9 +124,8 @@ public class DB {
 
             addMemesFromQueryToList(memeList);
 
-        } catch (SQLException ex) {
-            // handle any errors
-
+        }  catch (IOException e) {
+            e.printStackTrace();
         } finally {
             // zwalniamy zasoby, które nie będą potrzebne
             cleanRes();
@@ -179,7 +180,7 @@ public class DB {
     }
 
 
-    public void addMeme(Meme meme) {
+    public void addMeme(Meme meme) throws SQLException {
         try {
             connect();
             stmt = conn.createStatement();
@@ -190,12 +191,15 @@ public class DB {
             statement.setString(1, meme.getAuthor());
             statement.setString(2, meme.getTitle());
             statement.setString(3, meme.getTag());
-            statement.setBlob(4, meme.getImage());
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            ImageIO.write(SwingFXUtils.fromFXImage(meme.getImage(), null),"png", os);
+            InputStream is = new ByteArrayInputStream(os.toByteArray());
+            statement.setBlob(4, is);
             statement.executeUpdate();
 
-        } catch (SQLException ex) {
-            // handle any errors
-
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         } finally {
             // zwalniamy zasoby, które nie będą potrzebne
             cleanRes();
@@ -222,14 +226,15 @@ public class DB {
     }
 
 
-    private void addMemesFromQueryToList(ArrayList<Meme> bookList) throws SQLException {
+    private void addMemesFromQueryToList(ArrayList<Meme> bookList) throws SQLException, IOException {
         while (rs.next()) {
 
             String author = rs.getString(1);
             String title = rs.getString(2);
             String tag = rs.getString(3);
             InputStream memeImage = rs.getBinaryStream(4);
-            Meme meme = new Meme(tag, author, title, memeImage);
+            Image image = SwingFXUtils.toFXImage(ImageIO.read(memeImage), null);
+            Meme meme = new Meme(tag, author, title, image);
             bookList.add(meme);
         }
     }
