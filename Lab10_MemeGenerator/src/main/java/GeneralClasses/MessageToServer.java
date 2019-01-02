@@ -8,6 +8,7 @@ public class MessageToServer implements Serializable {
     private String username;
     private String password;
     private String autisticPseudo;
+    private String filter;
 
     public MessageToServer(String command) {
         this.command = command;
@@ -47,5 +48,13 @@ public class MessageToServer implements Serializable {
 
     public void setAutisticPseudo(String autisticPseudo) {
         this.autisticPseudo = autisticPseudo;
+    }
+
+    public String getFilter() {
+        return filter;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
     }
 }

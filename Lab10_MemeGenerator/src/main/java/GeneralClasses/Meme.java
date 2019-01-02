@@ -1,9 +1,10 @@
 package GeneralClasses;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
-import java.io.InputStream;
-import java.io.Serializable;
+import javax.imageio.ImageIO;
+import java.io.*;
 
 public class Meme implements Serializable{
 
@@ -12,10 +13,10 @@ public class Meme implements Serializable{
     private String tag;
     private String author;
     private String title;
-    private InputStream image;
+    private transient Image image;
 
 
-    public Meme(String upperText, String bottomText, String tag, String author, String title, InputStream image) {
+    public Meme(String upperText, String bottomText, String tag, String author, String title, Image image) {
         this.upperText = upperText;
         this.bottomText = bottomText;
         this.tag = tag;
@@ -23,11 +24,21 @@ public class Meme implements Serializable{
         this.title = title;
         this.image = image;
     }
-    public Meme(String tag, String author, String title, InputStream image){ //If meme already has upper and bottom text
+    public Meme(String tag, String author, String title, Image image){ //If meme already has upper and bottom text
         this.tag = tag;
         this.author = author;
         this.title = title;
         this.image = image;
+    }
+
+    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+        s.defaultReadObject();
+        image = SwingFXUtils.toFXImage(ImageIO.read(s), null);
+    }
+
+    private void writeObject(ObjectOutputStream s) throws IOException {
+        s.defaultWriteObject();
+        ImageIO.write(SwingFXUtils.fromFXImage(image, null), "jpg", s);
     }
 
     public String getUpperText() {
@@ -70,11 +81,11 @@ public class Meme implements Serializable{
         this.title = title;
     }
 
-    public InputStream getImage() {
+    public Image getImage() {
         return image;
     }
 
-    public void setImage(InputStream image) {
+    public void setImage(Image image) {
         this.image = image;
     }
 }
