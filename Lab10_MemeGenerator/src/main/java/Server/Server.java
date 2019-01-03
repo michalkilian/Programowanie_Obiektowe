@@ -6,14 +6,14 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Server implements Runnable{
+public class Server implements Runnable {
     protected int serverPort;
     protected ServerSocket serverSocket = null;
-    protected Thread       runningThread= null;
+    protected Thread runningThread = null;
     protected ExecutorService threadPool =
             Executors.newFixedThreadPool(10);
 
-    public Server(int port){
+    public Server(int port) {
         this.serverPort = port;
     }
 
@@ -24,13 +24,13 @@ public class Server implements Runnable{
 
     @Override
     public void run() {
-        synchronized(this){
+        synchronized (this) {
             this.runningThread = Thread.currentThread();
         }
         openServerSocket();
-        while (true){
+        while (true) {
             Socket clientSocket = null;
-            try{
+            try {
                 clientSocket = this.serverSocket.accept();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -38,7 +38,6 @@ public class Server implements Runnable{
             this.threadPool.execute(new WorkerRunnable(clientSocket));
         }
     }
-
 
 
     private void openServerSocket() {

@@ -136,8 +136,7 @@ public class ClientCreateMeme implements Initializable {
 
 
         if (selectedFile != null) {
-            pathToFile = selectedFile.getAbsolutePath();
-            System.out.println(pathToFile);
+            pathToFile = selectedFile.getAbsolutePath();;
             Image img = new Image(selectedFile.toURI().toString());
 
             ImageView mainImageView = new ImageView(img);

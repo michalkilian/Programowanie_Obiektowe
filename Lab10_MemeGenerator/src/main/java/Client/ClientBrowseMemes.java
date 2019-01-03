@@ -61,6 +61,9 @@ public class ClientBrowseMemes implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         valueList.setItems(memes);
+        if (user != null) {
+            memes.addAll(user.getMemeList());
+        }
         valueList.setCellFactory(param -> new ListCell<Meme>() {
             @Override
             protected void updateItem(Meme item, boolean empty) {
@@ -77,6 +80,7 @@ public class ClientBrowseMemes implements Initializable {
 
     public void initUser(ActiveSession user) {
         this.user = user;
+        memes.addAll(user.getMemeList());
     }
 
     @FXML
@@ -99,7 +103,7 @@ public class ClientBrowseMemes implements Initializable {
         MessageToServer messageToServer = new MessageToServer("searchtitle");
         messageToServer.setFilter(memeNameTextField.getText());
         getMemes(messageToServer);
-        if(user.getResponseHead()!= null){
+        if (user.getResponseHead() != null) {
             createResponseAlert(user.getResponseHead(), user.getResponseBody());
         }
     }
@@ -109,11 +113,10 @@ public class ClientBrowseMemes implements Initializable {
         MessageToServer messageToServer = new MessageToServer("searchauthor");
         messageToServer.setFilter(authorTextField.getText());
         getMemes(messageToServer);
-        if(user.getResponseHead()!= null){
+        if (user.getResponseHead() != null) {
             createResponseAlert(user.getResponseHead(), user.getResponseBody());
         }
     }
-
 
 
     @FXML
@@ -121,7 +124,7 @@ public class ClientBrowseMemes implements Initializable {
         MessageToServer messageToServer = new MessageToServer("searchtag");
         messageToServer.setFilter(tagTextField.getText());
         getMemes(messageToServer);
-        if(user.getResponseHead()!= null){
+        if (user.getResponseHead() != null) {
             createResponseAlert(user.getResponseHead(), user.getResponseBody());
         }
     }
@@ -130,7 +133,7 @@ public class ClientBrowseMemes implements Initializable {
     public void searchAll(ActionEvent event) {
         MessageToServer messageToServer = new MessageToServer("searchall");
         getMemes(messageToServer);
-        if(user.getResponseHead()!= null){
+        if (user.getResponseHead() != null) {
             createResponseAlert(user.getResponseHead(), user.getResponseBody());
         }
     }

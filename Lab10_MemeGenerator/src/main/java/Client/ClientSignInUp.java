@@ -110,6 +110,7 @@ public class ClientSignInUp {
             MessageToServer messageToServer = new MessageToServer("signup");
             messageToServer.setUsername(username);
             messageToServer.setPassword(password);
+            messageToServer.setAutisticPseudo(autisticPseudo);
             user.sendMessageToServer(messageToServer);
             createResponseAlert(user.getResponseHead(), user.getResponseBody());
 

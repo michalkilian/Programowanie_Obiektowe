@@ -46,7 +46,7 @@ public class WorkerRunnable implements Runnable {
         switch (messageToServer.getCommand()) {
             case "create":
                 try {
-                    createMeme(messageToServer);
+                    db.addMeme(createMeme(messageToServer));
                     return new MessageToClient("createsuccess");
 
                 } catch (Exception e) {
@@ -55,11 +55,11 @@ public class WorkerRunnable implements Runnable {
                 }
             case "signin":
                 pseudo = db.signIn(messageToServer.getUsername(), messageToServer.getPassword());
-                if (pseudo != null){
+                if (pseudo != null) {
                     MessageToClient msg = new MessageToClient("signinsuccess");
                     msg.setAutisticPseudo(pseudo);
                     return msg;
-                }else{
+                } else {
                     return new MessageToClient("signinerror");
                 }
 
@@ -67,47 +67,47 @@ public class WorkerRunnable implements Runnable {
             case "signup":
                 pseudo = messageToServer.getAutisticPseudo();
                 if (db.signUp(messageToServer.getUsername(), messageToServer.getPassword(), pseudo)) {
-                   MessageToClient msg =  new MessageToClient("signupsuccess");
-                   msg.setAutisticPseudo(pseudo);
-                   return msg;
-                }
-                else{
+                    MessageToClient msg = new MessageToClient("signupsuccess");
+                    msg.setAutisticPseudo(pseudo);
+                    return msg;
+                } else {
                     return new MessageToClient("signuperror");
                 }
 
 
             case "searchall":
-                try{
+                try {
                     MessageToClient msg = new MessageToClient("searchallsuccess");
                     msg.setMemeList(db.getAll());
                     return msg;
-                }catch (Exception e){
+                } catch (Exception e) {
+                    e.printStackTrace();
                     return new MessageToClient("searchallerror");
                 }
 
 
             case "searchauthor":
-                try{
+                try {
                     MessageToClient msg = new MessageToClient("searchauthorsuccess");
                     msg.setMemeList(db.getSelectedAuthor(messageToServer.getFilter()));
                     return msg;
-                }catch (Exception e){
+                } catch (Exception e) {
                     return new MessageToClient("searchauthorerror");
                 }
             case "searchtitle":
-                try{
+                try {
                     MessageToClient msg = new MessageToClient("searchtitlesuccess");
                     msg.setMemeList(db.getSelectedTitle(messageToServer.getFilter()));
                     return msg;
-                }catch (Exception e){
+                } catch (Exception e) {
                     return new MessageToClient("searchtitleerror");
                 }
             case "searchtag":
-                try{
+                try {
                     MessageToClient msg = new MessageToClient("searchtagsuccess");
                     msg.setMemeList(db.getSelectedTag(messageToServer.getFilter()));
                     return msg;
-                }catch (Exception e){
+                } catch (Exception e) {
                     return new MessageToClient("searchtagerror");
                 }
 
@@ -116,27 +116,23 @@ public class WorkerRunnable implements Runnable {
         }
     }
 
-    private void createMeme(MessageToServer messageToServer) throws IOException {
+    private Meme createMeme(MessageToServer messageToServer) throws IOException {
         Meme meme = messageToServer.getMeme();
         BufferedImage image = SwingFXUtils.fromFXImage(meme.getImage(), null);
         Graphics g = image.getGraphics();
 
         Image watermark = ImageIO.read(getClass().getResource("/watermark.png"));
-        g.drawImage( watermark,image.getWidth()/2, image.getHeight()/2, null);
+        g.drawImage(watermark, image.getWidth() / 2, image.getHeight() / 2, null);
 
-        g.setFont(new Font("Impact", Font.BOLD, image.getHeight()/15));
-        g.setColor(Color.BLACK);
+
         FontMetrics fm = g.getFontMetrics();
-        g.drawString(meme.getUpperText(),(image.getWidth()-fm.stringWidth(meme.getUpperText()))/2, g.getFont().getSize());
-        g.drawString(meme.getBottomText(), (image.getWidth()-fm.stringWidth(meme.getBottomText()))/2, image.getHeight() - 5);
 
-        g.setFont(new Font("Impact", Font.BOLD, image.getHeight()/17));
+        g.setFont(new Font("Impact", Font.BOLD, image.getHeight() / 17));
         g.setColor(Color.WHITE);
         fm = g.getFontMetrics();
-        g.drawString(meme.getUpperText(),(image.getWidth()-fm.stringWidth(meme.getUpperText()))/2, g.getFont().getSize());
-        g.drawString(meme.getBottomText(), (image.getWidth()-fm.stringWidth(meme.getBottomText()))/2, image.getHeight() - 6);
+        g.drawString(meme.getUpperText(), (image.getWidth() - fm.stringWidth(meme.getUpperText())) / 2, g.getFont().getSize());
+        g.drawString(meme.getBottomText(), (image.getWidth() - fm.stringWidth(meme.getBottomText())) / 2, image.getHeight() - 6);
         g.dispose();
-//TODO: ADDING TO DATABASE NOT CREATING FILE
-        ImageIO.write(image, "png", new File(meme.getTitle()+".png"));
+        return new Meme(meme.getTag(), meme.getAuthor(), meme.getTitle(), SwingFXUtils.toFXImage(image, null));
     }
 }

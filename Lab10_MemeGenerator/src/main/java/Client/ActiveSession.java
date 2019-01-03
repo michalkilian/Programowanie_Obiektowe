@@ -94,7 +94,6 @@ public class ActiveSession {
 
     private void handleMessage(MessageToClient returnedMessage) {
         responseHead = null;
-        System.out.println(returnedMessage.getResponse());
         switch (returnedMessage.getResponse()) {
             case "createsuccess":
                 responseHead = "Creation Successful";

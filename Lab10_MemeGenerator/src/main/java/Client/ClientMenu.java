@@ -33,7 +33,6 @@ public class ClientMenu implements Initializable {
             this.user = new ActiveSession();
             ActiveSession.connected = true;
         }
-
     }
 
     public void initUser(ActiveSession user) {

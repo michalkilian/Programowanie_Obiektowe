@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
 import java.io.*;
 
-public class Meme implements Serializable{
+public class Meme implements Serializable {
 
     private String upperText;
     private String bottomText;
@@ -24,7 +24,8 @@ public class Meme implements Serializable{
         this.title = title;
         this.image = image;
     }
-    public Meme(String tag, String author, String title, Image image){ //If meme already has upper and bottom text
+
+    public Meme(String tag, String author, String title, Image image) { //If meme already has upper and bottom text
         this.tag = tag;
         this.author = author;
         this.title = title;
@@ -45,47 +46,24 @@ public class Meme implements Serializable{
         return upperText;
     }
 
-    public void setUpperText(String upperText) {
-        this.upperText = upperText;
-    }
-
     public String getBottomText() {
         return bottomText;
-    }
-
-    public void setBottomText(String bottomText) {
-        this.bottomText = bottomText;
     }
 
     public String getTag() {
         return tag;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
     public String getAuthor() {
         return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public Image getImage() {
         return image;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
-    }
 }

@@ -23,7 +23,7 @@ public class DB {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
                 conn =
-                        DriverManager.getConnection("jdbc:mysql://mysql.agh.edu.pl/kilian",
+                        DriverManager.getConnection("jdbc:mysql://mysql.agh.edu.pl/kilian2",
                                 "kilian2", "4HU6ZHVf6YAJhzJo");
                 break;
             } catch (SQLException ex) {
@@ -57,7 +57,7 @@ public class DB {
             rs = stmt.executeQuery("SELECT * FROM memes");
 
             addMemesFromQueryToList(memeList);
-        }  catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             // zwalniamy zasoby, które nie będą potrzebne
@@ -80,7 +80,7 @@ public class DB {
 
             addMemesFromQueryToList(memeList);
 
-        }  catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             // zwalniamy zasoby, które nie będą potrzebne
@@ -102,7 +102,7 @@ public class DB {
 
             addMemesFromQueryToList(memeList);
 
-        }  catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             // zwalniamy zasoby, które nie będą potrzebne
@@ -124,7 +124,7 @@ public class DB {
 
             addMemesFromQueryToList(memeList);
 
-        }  catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             // zwalniamy zasoby, które nie będą potrzebne
@@ -152,15 +152,16 @@ public class DB {
         return null;
     }
 
-    public boolean signUp(String username, String passwd, String author) {
+    public boolean signUp(String username, String passwd, String autisticpseudo) {
         try {
             connect();
             stmt = conn.createStatement();
-            PreparedStatement statement = conn.prepareStatement("INSERT INTO users values (?,?,?)");
+
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO users (username, autisticpseudo, passwd)" + " VALUES (?,?,?)");
             statement.setString(1, (username));
-            statement.setString(2, (author));
+            statement.setString(2, (autisticpseudo));
             statement.setString(3, (passwd));
-            rs = statement.executeQuery();
+            statement.executeUpdate();
 
             return true;
         } catch (SQLException e) {
@@ -192,13 +193,12 @@ public class DB {
             statement.setString(2, meme.getTitle());
             statement.setString(3, meme.getTag());
             ByteArrayOutputStream os = new ByteArrayOutputStream();
-            ImageIO.write(SwingFXUtils.fromFXImage(meme.getImage(), null),"png", os);
+            ImageIO.write(SwingFXUtils.fromFXImage(meme.getImage(), null), "png", os);
             InputStream is = new ByteArrayInputStream(os.toByteArray());
             statement.setBlob(4, is);
             statement.executeUpdate();
 
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             // zwalniamy zasoby, które nie będą potrzebne
@@ -226,16 +226,18 @@ public class DB {
     }
 
 
-    private void addMemesFromQueryToList(ArrayList<Meme> bookList) throws SQLException, IOException {
+    private void addMemesFromQueryToList(ArrayList<Meme> memeList) throws SQLException, IOException {
         while (rs.next()) {
 
-            String author = rs.getString(1);
-            String title = rs.getString(2);
-            String tag = rs.getString(3);
-            InputStream memeImage = rs.getBinaryStream(4);
+            String author = rs.getString(2);
+            String title = rs.getString(3);
+            String tag = rs.getString(4);
+            InputStream memeImage = rs.getBinaryStream(5);
+
             Image image = SwingFXUtils.toFXImage(ImageIO.read(memeImage), null);
+
             Meme meme = new Meme(tag, author, title, image);
-            bookList.add(meme);
+            memeList.add(meme);
         }
     }
 
