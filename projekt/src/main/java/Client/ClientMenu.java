@@ -71,4 +71,17 @@ public class ClientMenu implements Initializable {
     }
 
 
+    public void changeSceneToProfile(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientProfile.fxml"));
+
+        Parent createMemeParent = loader.load();
+        Scene createMemeScene = new Scene(createMemeParent);
+
+        Stage window = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+        window.setScene(createMemeScene);
+
+        ClientProfile controller = loader.<ClientProfile>getController();
+        controller.initUser(user);
+        window.show();
+    }
 }
