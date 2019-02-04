@@ -40,7 +40,8 @@ Repozytorium na zajęcia z programowania obiektowego AGH Informatyka semestr 3
  * EchoServer - prosty serwer odbierający wiadomosć od klienta i odsyłający kopię
  * SzymonServer - klient i serwer zaprojektowany zgodnie (prawie) ze [schematem]( http://home.agh.edu.pl/~sbobek/old/doku.php?id=progobl8#cwiczenia).
 
-### Lab10_MemeGenerator:
+### projekt (Lab10_MemeGenerator):
+* program napisany jako projekt końcowy z przedmiotu
 * klient i serwer
 * klient - GUI - pozwala użytkownikowi na wybranie obrazka z galerii lub dysku i wysłanie go do obróbki na serwer oraz oglądnie obrobionych obrazków
 * serwer - obrabia otrzymane obrazki dodając napisy, przesyła je do bazy danych
