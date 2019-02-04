@@ -25,5 +25,7 @@
       <Label layoutX="649.0" layoutY="6.0" text="Meme Title" />
       <Label layoutX="173.0" layoutY="463.0" text="Author" />
       <Label layoutX="393.0" layoutY="463.0" text="Tag" />
+      <Button fx:id="rateMemeButton" layoutX="491.0" layoutY="459.0" mnemonicParsing="false" onAction="#rateMeme" text="+1" />
+      <Label fx:id="memeRating" layoutX="433.0" layoutY="455.0" prefHeight="35.0" prefWidth="37.0" />
     </children>
 </AnchorPane>
