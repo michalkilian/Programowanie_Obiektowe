@@ -25,12 +25,21 @@ import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
+/**
+ * Controller class for creating memes scene
+ *
+ * @author Michal Kilian
+ */
 public class ClientCreateMeme implements Initializable {
 
-
+    /**
+     * Active user and server connector
+     */
     ActiveSession user;
     String pathToFile;
 
+    //FXML properties
     @FXML
     private TextField upperTextField;
 
@@ -58,6 +67,16 @@ public class ClientCreateMeme implements Initializable {
     @FXML
     private Button ownPictureButton;
 
+    /**
+     * Function called when scene is switched
+     *
+     * <p>
+     *     Function sets content of gallery using sample memes stored in resource folder.
+     * </p>
+     *
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -87,10 +106,26 @@ public class ClientCreateMeme implements Initializable {
 
     }
 
+    /**
+     * Function called when changing scene to save information about session between different controllers
+     *
+     * @param user active user
+     */
     public void initUser(ActiveSession user) {
         this.user = user;
     }
 
+
+    /**
+     * Switching scene to main menu
+     *
+     * <p>
+     *     This function is called when "back" button is pressed.
+     * </p>
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void goBackToMenu(ActionEvent event) throws IOException {
 //        Parent createMemeParent = FXMLLoader.load(getClass().getResource("/ClientMenu.fxml"));
@@ -113,6 +148,16 @@ public class ClientCreateMeme implements Initializable {
         window.show();
     }
 
+    /**
+     * Switching scene to sign in/up
+     *
+     * <p>
+     *     This function is called when "sign in/sign up" button is pressed.
+     * </p>
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void goToSignInUp(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientSignInUp.fxml"));
@@ -128,6 +173,11 @@ public class ClientCreateMeme implements Initializable {
         window.show();
     }
 
+    /**
+     * Set meme image to picture from drive
+     *
+     * @param event
+     */
     @FXML
     public void pickOwnPicture(ActionEvent event) {
         FileChooser fc = new FileChooser();
@@ -150,7 +200,11 @@ public class ClientCreateMeme implements Initializable {
         }
     }
 
-
+    /**
+     * Set meme image to picture from application gallery when picked
+     *
+     * @param image image picked by user from application gallery
+     */
     public void addEventToImageView(ImageView image) {
         image.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
@@ -171,6 +225,17 @@ public class ClientCreateMeme implements Initializable {
         });
     }
 
+
+    /**
+     * Gather information from fields and send request to server for creating meme
+     *
+     * <p>
+     *     Function called when pressing "create MEME" button. Gathers information from FXML properties, create Meme
+     *     object and send in to server using {@link #user} property. Meme can't be created if photo or title is empty.
+     * </p>
+     *
+     * @param event
+     */
     @FXML
     public void createMeme(ActionEvent event) {
         ObservableList<Node> stackPaneContent = imageStackPane.getChildren();
@@ -210,6 +275,12 @@ public class ClientCreateMeme implements Initializable {
         clearFields();
     }
 
+    /**
+     * Create pop-up alert
+     *
+     * @param responseHead text displayed on alert's top bar
+     * @param responseBody text displayed on alert's body
+     */
     private void createResponseAlert(String responseHead, String responseBody) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(responseHead);
@@ -218,6 +289,9 @@ public class ClientCreateMeme implements Initializable {
         });
     }
 
+    /**
+     * Clear content of FXML properties
+     */
     private void clearFields() {
         this.upperTextField.setText("");
         this.bottomTextField.setText("");

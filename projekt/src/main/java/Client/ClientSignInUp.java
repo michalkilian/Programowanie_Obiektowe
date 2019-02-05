@@ -13,10 +13,19 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Controller class for user profile scene
+ *
+ * @author Michal Kilian
+ */
 public class ClientSignInUp {
 
+    /**
+     * Active user and server connector
+     */
     ActiveSession user;
 
+    //FXML properties
     @FXML
     private Button signInButton;
 
@@ -45,10 +54,26 @@ public class ClientSignInUp {
     private PasswordField signInPassword;
 
 
+    /**
+     * Function called when changing scene to save information about session between different controllers
+     *
+     * @param user active user
+     */
     public void initUser(ActiveSession user) {
         this.user = user;
     }
 
+
+    /**
+     * Switching scene to create memes
+     *
+     * <p>
+     * This function is called when "back" button is pressed.
+     * </p>
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void goBackToCreate(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientCreateMeme.fxml"));
@@ -65,6 +90,17 @@ public class ClientSignInUp {
 
     }
 
+    /**
+     * Prepare request and send request to server for log in as a given user
+     *
+     * <p>
+     *     Function gathers username and password from {@link #signInUsername} and {@link #signInPassword},
+     *     prepares message then send it using {@link #user} property. If successful active user is changed and pop up
+     *     is generated. Otherwise an error message shows up.
+     * </p>
+     *
+     * @param event
+     */
     @FXML
     public void signIn(ActionEvent event) {
         try {
@@ -90,7 +126,17 @@ public class ClientSignInUp {
 
     }
 
-
+    /**
+     * Prepare request and send request to server for create user account
+     *
+     * <p>
+     *     Function gathers information about new user from FXML properties, prepares message then send it
+     *     using {@link #user} property. If successful new account is created, active user is changed and pop up
+     *     is generated. Otherwise an error message shows up. Passwords must be matching in both FXML passwords fields.
+     * </p>
+     *
+     * @param event
+     */
     @FXML
     public void signUp(ActionEvent event) {
         try {
@@ -127,6 +173,12 @@ public class ClientSignInUp {
 
     }
 
+    /**
+     * Create pop-up alert
+     *
+     * @param responseHead text displayed on alert's top bar
+     * @param responseBody text displayed on alert's body
+     */
     private void createResponseAlert(String responseHead, String responseBody) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(responseHead);
@@ -135,6 +187,9 @@ public class ClientSignInUp {
         });
     }
 
+    /**
+     * Clear content of FXML properties
+     */
     private void clearFields() {
         signUpUsername.setText("");
         signUpAuthorPseudonim.setText("");

@@ -20,8 +20,23 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
+/**
+ * Controller class for browsing memes scene
+ *
+ * @author Michal Kilian
+ */
 public class ClientBrowseMemes implements Initializable {
 
+    /**
+     * Active user and server connector
+     */
+    ActiveSession user;
+
+    /**
+     * Currently selected and displayed in ImageView meme
+     */
+    Meme activeMeme;
 
     @FXML
     public ImageView memeImage;
@@ -30,10 +45,18 @@ public class ClientBrowseMemes implements Initializable {
     public Label memeRating;
 
 
-    ActiveSession user;
-    Meme activeMeme;
-
+    /**
+     * Collection of memes retrieved from server
+     */
     private ObservableList<Meme> memes = FXCollections.observableArrayList();
+
+    /**
+     * Changing selected meme listener
+     *
+     * <p>
+     *     When selected meme is changed it sets properties values.
+     * </p>
+     */
     private ChangeListener<Meme> picked = new ChangeListener<Meme>() {
         @Override
         public void changed(ObservableValue<? extends Meme> observable, Meme oldValue, Meme newValue) {
@@ -45,7 +68,7 @@ public class ClientBrowseMemes implements Initializable {
         }
     };
 
-
+    //FXML properties
     @FXML
     public ListView<Meme> valueList;
 
@@ -67,6 +90,16 @@ public class ClientBrowseMemes implements Initializable {
     @FXML
     private TextField tag;
 
+    /**
+     * Function called when scene is switched
+     *
+     * <p>
+     *     If user is defined it initialized memes already retrieved from server.
+     * </p>
+     *
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         valueList.setItems(memes);
@@ -87,11 +120,27 @@ public class ClientBrowseMemes implements Initializable {
         valueList.getSelectionModel().selectedItemProperty().addListener(picked);
     }
 
+    /**
+     * Function called when changing scene to save information about session between different controllers
+     *
+     * @param user active user
+     */
     public void initUser(ActiveSession user) {
         this.user = user;
         memes.addAll(user.getMemeList());
     }
 
+
+    /**
+     * Switching scene to main menu
+     *
+     * <p>
+     *     This function is called when "back" button is pressed.
+     * </p>
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void goBackToMenu(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientMenu.fxml"));
@@ -107,6 +156,16 @@ public class ClientBrowseMemes implements Initializable {
         window.show();
     }
 
+    /**
+     * Prepare request to server and retrieve memes with given title
+     *
+     * <p>
+     *     Function gathers information from {@link #memeNameTextField}, prepares message by setting command and
+     *     filter properties then send it using {@link #getMemes(MessageToServer)}
+     * </p>
+     *
+     * @param event
+     */
     @FXML
     public void searchByMeme(ActionEvent event) {
         MessageToServer messageToServer = new MessageToServer("searchtitle");
@@ -117,6 +176,16 @@ public class ClientBrowseMemes implements Initializable {
         }
     }
 
+    /**
+     * Prepare request to server and retrieve memes created by given author
+     *
+     * <p>
+     *     Function gathers information about desired author from {@link #authorTextField}, prepares message by
+     *     setting command and filter properties then send it using {@link #getMemes(MessageToServer)}
+     * </p>
+     *
+     * @param event
+     */
     @FXML
     public void searchByAuthor(ActionEvent event) {
         MessageToServer messageToServer = new MessageToServer("searchauthor");
@@ -127,7 +196,16 @@ public class ClientBrowseMemes implements Initializable {
         }
     }
 
-
+    /**
+     * Prepare request to server and retrieve memes with given tag
+     *
+     * <p>
+     *     Function gathers information about desired tag from {@link #tagTextField}, prepares message by
+     *     setting command and filter properties then send it using {@link #getMemes(MessageToServer)}
+     * </p>
+     *
+     * @param event
+     */
     @FXML
     public void searchByTag(ActionEvent event) {
         MessageToServer messageToServer = new MessageToServer("searchtag");
@@ -138,6 +216,15 @@ public class ClientBrowseMemes implements Initializable {
         }
     }
 
+    /**
+     * Prepare request to server and retrieve all memes from database
+     *
+     * <p>
+     *     Function prepares message by setting command then send it using {@link #getMemes(MessageToServer)}
+     * </p>
+     *
+     * @param event
+     */
     @FXML
     public void searchAll(ActionEvent event) {
         MessageToServer messageToServer = new MessageToServer("searchall");
@@ -147,6 +234,11 @@ public class ClientBrowseMemes implements Initializable {
         }
     }
 
+    /**
+     * Send request with optional filters to server and add memes retrieved in response to library     *
+     *
+     * @param messageToServer message that is going to be sent to server
+     */
     private void getMemes(MessageToServer messageToServer) {
         try {
             user.sendMessageToServer(messageToServer);
@@ -157,6 +249,13 @@ public class ClientBrowseMemes implements Initializable {
         }
     }
 
+
+    /**
+     * Create pop-up alert
+     *
+     * @param responseHead text displayed on alert's top bar
+     * @param responseBody text displayed on alert's body
+     */
     private void createResponseAlert(String responseHead, String responseBody) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(responseHead);
@@ -165,6 +264,16 @@ public class ClientBrowseMemes implements Initializable {
         });
     }
 
+    /**
+     * Prepare and send request to server for upvote selected meme
+     *
+     * <p>
+     *     Message to server consists of username used to retrieve userID from DB and memeID. If success meme rating
+     *     will be increased by 1. Guest user can't rate meme. User can't rate same meme twice.
+     * </p>
+     *
+     * @param event
+     */
     public void rateMeme(ActionEvent event) {
         if (user.getUsername() != null) {
             try {

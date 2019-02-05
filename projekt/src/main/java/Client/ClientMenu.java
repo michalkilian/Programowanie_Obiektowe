@@ -14,10 +14,20 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
+/**
+ * Controller class for main menu scene
+ *
+ * @author Michal Kilian
+ */
 public class ClientMenu implements Initializable {
 
+    /**
+     * Active user and server connector
+     */
     ActiveSession user;
 
+    //FXML properties
     @FXML
     private Button createButton;
 
@@ -27,6 +37,17 @@ public class ClientMenu implements Initializable {
     @FXML
     private Label pseudoLabel;
 
+
+    /**
+     * Function called when scene is switched
+     *
+     * <p>
+     *     If user is not initialized (after starting application) function initializes it.
+     * </p>
+     *
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if (!ActiveSession.connected) {
@@ -35,11 +56,26 @@ public class ClientMenu implements Initializable {
         }
     }
 
+    /**
+     * Function called when changing scene to save information about session between different controllers
+     *
+     * @param user active user
+     */
     public void initUser(ActiveSession user) {
         this.user = user;
         this.pseudoLabel.setText(user.getAutisticPseudo());
     }
 
+    /**
+     * Switching scene to create meme scene
+     *
+     * <p>
+     *     This function is called when "create" button is pressed.
+     * </p>
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void changeSceneToCreateMeme(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientCreateMeme.fxml"));
@@ -55,6 +91,16 @@ public class ClientMenu implements Initializable {
         window.show();
     }
 
+    /**
+     * Switching scene to browse memes scene
+     *
+     * <p>
+     *     This function is called when "browse" button is pressed.
+     * </p>
+     *
+     * @param event
+     * @throws IOException
+     */
     public void changeSceneToBrowseMemes(ActionEvent event) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientBrowseMemes.fxml"));
@@ -71,6 +117,16 @@ public class ClientMenu implements Initializable {
     }
 
 
+    /**
+     * Switching scene to user profile scene
+     *
+     * <p>
+     *     This function is called when "profile" button is pressed.
+     * </p>
+     *
+     * @param event
+     * @throws IOException
+     */
     public void changeSceneToProfile(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientProfile.fxml"));
 
