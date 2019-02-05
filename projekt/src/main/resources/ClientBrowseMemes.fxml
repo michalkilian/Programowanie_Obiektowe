@@ -6,26 +6,42 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ClientBrowseMemes">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ClientBrowseMemes">
     <children>
-        <ImageView fitHeight="438.0" fitWidth="545.0" layoutX="22.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-        <ListView fx:id="valueList" layoutX="576.0" layoutY="27.0" prefHeight="438.0" prefWidth="202.0" />
-        <Button fx:id="backButton" layoutX="709.0" layoutY="536.0" mnemonicParsing="false" onAction="#goBackToMenu" prefHeight="35.0" prefWidth="69.0" text="Back" />
-        <ImageView fx:id="memeImage" fitHeight="438.0" fitWidth="565.0" layoutX="-7.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
-        <Button fx:id="searchByMemeButton" layoutX="14.0" layoutY="494.0" mnemonicParsing="false" onAction="#searchByMeme" text="Search by meme" />
-        <TextField fx:id="memeNameTextField" layoutX="126.0" layoutY="494.0" promptText="Title" />
-        <Button fx:id="searchByTagButton" layoutX="22.0" layoutY="524.0" mnemonicParsing="false" onAction="#searchByTag" text="Search by tag" />
-        <Button fx:id="searchByAuthorButton" layoutX="13.0" layoutY="559.0" mnemonicParsing="false" onAction="#searchByAuthor" text="Search by author" />
-        <TextField fx:id="tagTextField" layoutX="126.0" layoutY="524.0" promptText="Tag" />
-        <TextField fx:id="authorTextField" layoutX="126.0" layoutY="559.0" promptText="Author" />
-        <TextField fx:id="author" editable="false" layoutX="13.0" layoutY="459.0" />
-        <TextField fx:id="tag" editable="false" layoutX="232.0" layoutY="459.0" />
-      <Button fx:id="searchAll" layoutX="290.0" layoutY="501.0" mnemonicParsing="false" onAction="#searchAll" prefHeight="70.0" prefWidth="182.0" text="Search ALL!" />
-      <Label layoutX="649.0" layoutY="6.0" text="Meme Title" />
-      <Label layoutX="173.0" layoutY="463.0" text="Author" />
-      <Label layoutX="393.0" layoutY="463.0" text="Tag" />
-      <Button fx:id="rateMemeButton" layoutX="491.0" layoutY="459.0" mnemonicParsing="false" onAction="#rateMeme" text="+1" />
-      <Label fx:id="memeRating" layoutX="433.0" layoutY="455.0" prefHeight="35.0" prefWidth="37.0" />
+        <ImageView fitHeight="430.0" fitWidth="545.0" layoutX="22.0" layoutY="14.0" pickOnBounds="true"
+                   preserveRatio="true"/>
+        <ListView fx:id="valueList" layoutX="576.0" layoutY="27.0" prefHeight="438.0" prefWidth="202.0"/>
+        <Button fx:id="backButton" layoutX="709.0" layoutY="536.0" mnemonicParsing="false" onAction="#goBackToMenu"
+                prefHeight="35.0" prefWidth="69.0" text="Back"/>
+        <ImageView fx:id="memeImage" fitHeight="438.0" fitWidth="565.0" layoutX="-7.0" layoutY="6.0" pickOnBounds="true"
+                   preserveRatio="true"/>
+        <Button fx:id="searchByMemeButton" layoutX="14.0" layoutY="494.0" mnemonicParsing="false"
+                onAction="#searchByMeme" text="Search by meme"/>
+        <TextField fx:id="memeNameTextField" layoutX="126.0" layoutY="494.0" promptText="Title"/>
+        <Button fx:id="searchByTagButton" layoutX="22.0" layoutY="524.0" mnemonicParsing="false" onAction="#searchByTag"
+                text="Search by tag"/>
+        <Button fx:id="searchByAuthorButton" layoutX="13.0" layoutY="559.0" mnemonicParsing="false"
+                onAction="#searchByAuthor" text="Search by author"/>
+        <TextField fx:id="tagTextField" layoutX="126.0" layoutY="524.0" promptText="Tag"/>
+        <TextField fx:id="authorTextField" layoutX="126.0" layoutY="559.0" promptText="Author"/>
+        <TextField fx:id="author" editable="false" layoutX="13.0" layoutY="459.0"/>
+        <TextField fx:id="tag" editable="false" layoutX="232.0" layoutY="459.0"/>
+        <Button fx:id="searchAll" layoutX="290.0" layoutY="501.0" mnemonicParsing="false" onAction="#searchAll"
+                prefHeight="70.0" prefWidth="182.0" text="Search ALL!"/>
+        <Label layoutX="649.0" layoutY="6.0" text="Meme Title"/>
+        <Label layoutX="173.0" layoutY="463.0" text="Author"/>
+        <Label layoutX="393.0" layoutY="463.0" text="Tag"/>
+        <Button fx:id="rateMemeButton" layoutX="491.0" layoutY="468.0" mnemonicParsing="false" onAction="#rateMeme"
+                text="+1"/>
+        <Label fx:id="memeRating" alignment="CENTER" contentDisplay="CENTER" layoutX="454.0" layoutY="463.0"
+               prefHeight="35.0" prefWidth="37.0" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS"/>
+        <Label layoutX="462.0" layoutY="451.0" prefHeight="17.0" prefWidth="52.0" text="RATING">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Label>
     </children>
 </AnchorPane>
