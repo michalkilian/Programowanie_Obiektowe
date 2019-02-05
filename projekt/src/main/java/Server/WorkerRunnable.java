@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.Socket;
+import java.util.HashMap;
 
 import javafx.embed.swing.SwingFXUtils;
 
@@ -58,6 +59,7 @@ public class WorkerRunnable implements Runnable {
                 if (pseudo != null) {
                     MessageToClient msg = new MessageToClient("signinsuccess");
                     msg.setAutisticPseudo(pseudo);
+                    msg.setUsername(messageToServer.getUsername());
                     return msg;
                 } else {
                     return new MessageToClient("signinerror");
@@ -69,6 +71,7 @@ public class WorkerRunnable implements Runnable {
                 if (db.signUp(messageToServer.getUsername(), messageToServer.getPassword(), pseudo)) {
                     MessageToClient msg = new MessageToClient("signupsuccess");
                     msg.setAutisticPseudo(pseudo);
+                    msg.setUsername(messageToServer.getUsername());
                     return msg;
                 } else {
                     return new MessageToClient("signuperror");
@@ -110,7 +113,20 @@ public class WorkerRunnable implements Runnable {
                 } catch (Exception e) {
                     return new MessageToClient("searchtagerror");
                 }
-
+            case "getstats":
+                try{
+                    MessageToClient msg = new MessageToClient("statssuccess");
+                    String username = messageToServer.getUsername();
+                    HashMap<String, String> stats = db.getStats(username);
+                    msg.setUsername(username);
+                    msg.setKarma(stats.get("karma"));
+                    msg.setNumberOfMemes(stats.get("numberOfMemes"));
+                    msg.setRegisterDate(stats.get("registerDate"));
+                    msg.setTopMemeKarma(stats.get("topMeme"));
+                    return msg;
+                } catch (Exception e){
+                    return new MessageToClient("statserror");
+                }
             default:
                 return new MessageToClient("default");
         }

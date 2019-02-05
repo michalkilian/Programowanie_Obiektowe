@@ -5,7 +5,11 @@ import GeneralClasses.Meme;
 import java.io.*;
 
 import java.sql.*;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
@@ -157,12 +161,17 @@ public class DB {
             connect();
             stmt = conn.createStatement();
 
-            PreparedStatement statement = conn.prepareStatement("INSERT INTO users (username, autisticpseudo, passwd)" + " VALUES (?,?,?)");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            Date date = new Date();
+            java.sql.Date sqlData = new java.sql.Date(date.getTime());
+
+
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO users (username, autisticpseudo, passwd, registerdate)" + " VALUES (?,?,?,?)");
             statement.setString(1, (username));
             statement.setString(2, (autisticpseudo));
             statement.setString(3, (passwd));
+            statement.setDate(4, sqlData);
             statement.executeUpdate();
-
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -241,4 +250,38 @@ public class DB {
         }
     }
 
+    public HashMap<String, String> getStats(String username) {
+        HashMap<String, String> stats = new HashMap<>();
+        //top meme karma
+        try{
+            connect();
+            stmt = conn.createStatement();
+
+            PreparedStatement userStatement = conn.prepareStatement("SELECT userid, autisticpseudo, registerdate " +
+                    "FROM users WHERE username LIKE ?");
+            userStatement.setString(1, username);
+            rs = userStatement.executeQuery();
+            rs.next();
+           // String userId = rs.getString(1);
+            String autisticPseudo = rs.getString(2);
+            stats.put("registerDate", rs.getString(3));
+
+            PreparedStatement statement = conn.prepareStatement("SELECT sum(rating), count(memeid), max(rating) FROM memes WHERE autisticpseudo LIKE ?");
+            statement.setString(1, (autisticPseudo));
+            rs = statement.executeQuery();
+            rs.next();
+            stats.put("karma", String.valueOf(rs.getInt(1)));
+            stats.put("numberOfMemes", String.valueOf(rs.getInt(2)));
+            stats.put("topMeme", String.valueOf(rs.getInt(3)));
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            cleanRes();
+        }
+
+
+        return stats;
+    }
 }

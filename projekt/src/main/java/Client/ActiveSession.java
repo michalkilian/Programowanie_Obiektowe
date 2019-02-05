@@ -24,42 +24,52 @@ public class ActiveSession {
     public static boolean connected = false;
 
     private String autisticPseudo = "";
+    private String username;
 
     private String responseHead = "";
     private String responseBody = "";
 
     private ArrayList<Meme> memeList = new ArrayList<>();
 
+    private String karma = "0";
+    private String registerDate = "";
+    private String  numberOfMemes = "0";
+    private String topMemeKarma = "0";
+
     public String getAutisticPseudo() {
         return autisticPseudo;
-    }
-
-    public void setAutisticPseudo(String autisticPseudo) {
-        this.autisticPseudo = autisticPseudo;
     }
 
     public String getResponseHead() {
         return responseHead;
     }
 
-    public void setResponseHead(String responseHead) {
-        this.responseHead = responseHead;
-    }
-
     public String getResponseBody() {
         return responseBody;
-    }
-
-    public void setResponseBody(String responseBody) {
-        this.responseBody = responseBody;
     }
 
     public ArrayList<Meme> getMemeList() {
         return memeList;
     }
 
-    public void setMemeList(ArrayList<Meme> memeList) {
-        this.memeList = memeList;
+    public String getKarma() {
+        return karma;
+    }
+
+    public String getRegisterDate() {
+        return registerDate;
+    }
+
+    public String getNumberOfMemes() {
+        return numberOfMemes;
+    }
+
+    public String getTopMemeKarma() {
+        return topMemeKarma;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     /**
@@ -106,6 +116,7 @@ public class ActiveSession {
                 responseHead = "Sign In Success";
                 responseBody = "Logged as " + returnedMessage.getAutisticPseudo();
                 this.autisticPseudo = returnedMessage.getAutisticPseudo();
+                this.username = returnedMessage.getUsername();
                 break;
             case "signinerror":
                 responseHead = "Sign In Failed";
@@ -115,6 +126,7 @@ public class ActiveSession {
                 responseHead = "Sign Up Success";
                 responseBody = "Logged as " + returnedMessage.getAutisticPseudo();
                 this.autisticPseudo = returnedMessage.getAutisticPseudo();
+                this.username = returnedMessage.getUsername();
                 break;
             case "signuperror":
                 responseHead = "Sign Up Failed";
@@ -133,8 +145,18 @@ public class ActiveSession {
                 responseHead = "Error";
                 responseBody = "Can't load memes";
                 break;
+            case "statssuccess":
+                karma = returnedMessage.getKarma();
+                topMemeKarma = returnedMessage.getTopMemeKarma();
+                registerDate = returnedMessage.getRegisterDate();
+                numberOfMemes = returnedMessage.getNumberOfMemes();
+                break;
+            case "statserror":
+                break;
+
         }
     }
+
 
 
 }

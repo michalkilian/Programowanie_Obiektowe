@@ -82,6 +82,7 @@ public class ClientMenu implements Initializable {
 
         ClientProfile controller = loader.<ClientProfile>getController();
         controller.initUser(user);
+        controller.initStats(user);
         window.show();
     }
 }
