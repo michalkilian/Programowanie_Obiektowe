@@ -215,6 +215,84 @@ public class DB {
         }
     }
 
+
+    private void addMemesFromQueryToList(ArrayList<Meme> memeList) throws SQLException, IOException {
+        while (rs.next()) {
+
+            String author = rs.getString(2);
+            String title = rs.getString(3);
+            String tag = rs.getString(4);
+            InputStream memeImage = rs.getBinaryStream(5);
+
+            Image image = SwingFXUtils.toFXImage(ImageIO.read(memeImage), null);
+
+            Meme meme = new Meme(tag, author, title, image);
+            meme.setRating(String.valueOf(rs.getInt(6)));
+            meme.setMemeID(rs.getInt(1));
+            memeList.add(meme);
+        }
+    }
+
+    public HashMap<String, String> getStats(String username) {
+        HashMap<String, String> stats = new HashMap<>();
+        try {
+            connect();
+            stmt = conn.createStatement();
+
+            PreparedStatement userStatement = conn.prepareStatement("SELECT userid, autisticpseudo, registerdate " +
+                    "FROM users WHERE username LIKE ?");
+            userStatement.setString(1, username);
+            rs = userStatement.executeQuery();
+            rs.next();
+            // String userId = rs.getString(1);
+            String autisticPseudo = rs.getString(2);
+            stats.put("registerDate", rs.getString(3));
+
+            PreparedStatement statement = conn.prepareStatement("SELECT sum(rating), count(memeid), max(rating) FROM memes WHERE autisticpseudo LIKE ?");
+            statement.setString(1, (autisticPseudo));
+            rs = statement.executeQuery();
+            rs.next();
+            stats.put("karma", String.valueOf(rs.getInt(1)));
+            stats.put("numberOfMemes", String.valueOf(rs.getInt(2)));
+            stats.put("topMeme", String.valueOf(rs.getInt(3)));
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cleanRes();
+        }
+
+        return stats;
+    }
+
+    public boolean rateMeme(String username, int memeID) {
+        boolean result = false;
+        try {
+            connect();
+            stmt = conn.createStatement();
+
+            PreparedStatement userStatement = conn.prepareStatement("SELECT userid FROM users WHERE username LIKE ?");
+            userStatement.setString(1, username);
+            rs = userStatement.executeQuery();
+            rs.next();
+            int userID = rs.getInt(1);
+
+
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO userratings values(? ,?)");
+            statement.setInt(1, userID);
+            statement.setInt(2, memeID);
+            statement.executeUpdate();
+            result = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cleanRes();
+        }
+        return result;
+    }
+
+
     private void cleanRes() {
         if (rs != null) {
             try {
@@ -232,56 +310,5 @@ public class DB {
 
             stmt = null;
         }
-    }
-
-
-    private void addMemesFromQueryToList(ArrayList<Meme> memeList) throws SQLException, IOException {
-        while (rs.next()) {
-
-            String author = rs.getString(2);
-            String title = rs.getString(3);
-            String tag = rs.getString(4);
-            InputStream memeImage = rs.getBinaryStream(5);
-
-            Image image = SwingFXUtils.toFXImage(ImageIO.read(memeImage), null);
-
-            Meme meme = new Meme(tag, author, title, image);
-            memeList.add(meme);
-        }
-    }
-
-    public HashMap<String, String> getStats(String username) {
-        HashMap<String, String> stats = new HashMap<>();
-        //top meme karma
-        try{
-            connect();
-            stmt = conn.createStatement();
-
-            PreparedStatement userStatement = conn.prepareStatement("SELECT userid, autisticpseudo, registerdate " +
-                    "FROM users WHERE username LIKE ?");
-            userStatement.setString(1, username);
-            rs = userStatement.executeQuery();
-            rs.next();
-           // String userId = rs.getString(1);
-            String autisticPseudo = rs.getString(2);
-            stats.put("registerDate", rs.getString(3));
-
-            PreparedStatement statement = conn.prepareStatement("SELECT sum(rating), count(memeid), max(rating) FROM memes WHERE autisticpseudo LIKE ?");
-            statement.setString(1, (autisticPseudo));
-            rs = statement.executeQuery();
-            rs.next();
-            stats.put("karma", String.valueOf(rs.getInt(1)));
-            stats.put("numberOfMemes", String.valueOf(rs.getInt(2)));
-            stats.put("topMeme", String.valueOf(rs.getInt(3)));
-
-
-        }catch (SQLException e){
-            e.printStackTrace();
-        }finally {
-            cleanRes();
-        }
-
-
-        return stats;
     }
 }

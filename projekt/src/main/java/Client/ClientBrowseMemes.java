@@ -23,8 +23,15 @@ import java.util.ResourceBundle;
 public class ClientBrowseMemes implements Initializable {
 
 
+    @FXML
     public ImageView memeImage;
+
+    @FXML
+    public Label memeRating;
+
+
     ActiveSession user;
+    Meme activeMeme;
 
     private ObservableList<Meme> memes = FXCollections.observableArrayList();
     private ChangeListener<Meme> picked = new ChangeListener<Meme>() {
@@ -33,6 +40,8 @@ public class ClientBrowseMemes implements Initializable {
             author.setText(newValue.getAuthor());
             tag.setText(newValue.getTag());
             memeImage.setImage(newValue.getImage());
+            memeRating.setText(newValue.getRating());
+            activeMeme = newValue;
         }
     };
 
@@ -143,8 +152,8 @@ public class ClientBrowseMemes implements Initializable {
             user.sendMessageToServer(messageToServer);
             memes.clear();
             memes.addAll(user.getMemeList());
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (IOException | ClassNotFoundException | NullPointerException e) {
+            createResponseAlert("Error during loading memes", "Contact admins or try again later");
         }
     }
 
@@ -154,5 +163,29 @@ public class ClientBrowseMemes implements Initializable {
         alert.setHeaderText(responseBody);
         alert.showAndWait().ifPresent(rs -> {
         });
+    }
+
+    public void rateMeme(ActionEvent event) {
+        if (user.getUsername() != null) {
+            try {
+                MessageToServer messageToServer = new MessageToServer("ratememe");
+                messageToServer.setUsername(user.getUsername());
+                messageToServer.setMemeId(activeMeme.getMemeID());
+                user.sendMessageToServer(messageToServer);
+                System.out.println(user.getResponseHead());
+                if (user.getResponseHead().equals("ratememesuccess")) {
+                    activeMeme.setRating(String.valueOf(Integer.parseInt(activeMeme.getRating()) + 1));
+                    memeRating.setText(activeMeme.getRating());
+                } else if (user.getResponseHead().equals("ratememeerror")) {
+                    createResponseAlert("You can't rate meme twice", "");
+                } else {
+                    createResponseAlert("Error during rating meme", "Contact admins or try again later");
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            createResponseAlert("You must be logged in to do this", "");
+        }
     }
 }

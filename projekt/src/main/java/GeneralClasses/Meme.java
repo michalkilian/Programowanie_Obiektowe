@@ -8,12 +8,16 @@ import java.io.*;
 
 public class Meme implements Serializable {
 
+
     private String upperText;
     private String bottomText;
     private String tag;
     private String author;
     private String title;
     private transient Image image;
+
+    private int memeID;
+    private String rating;
 
 
     public Meme(String upperText, String bottomText, String tag, String author, String title, Image image) {
@@ -66,4 +70,19 @@ public class Meme implements Serializable {
         return image;
     }
 
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public int getMemeID() {
+        return memeID;
+    }
+
+    public void setMemeID(int memeID) {
+        this.memeID = memeID;
+    }
 }

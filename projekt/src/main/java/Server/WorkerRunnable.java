@@ -114,7 +114,7 @@ public class WorkerRunnable implements Runnable {
                     return new MessageToClient("searchtagerror");
                 }
             case "getstats":
-                try{
+                try {
                     MessageToClient msg = new MessageToClient("statssuccess");
                     String username = messageToServer.getUsername();
                     HashMap<String, String> stats = db.getStats(username);
@@ -124,8 +124,17 @@ public class WorkerRunnable implements Runnable {
                     msg.setRegisterDate(stats.get("registerDate"));
                     msg.setTopMemeKarma(stats.get("topMeme"));
                     return msg;
-                } catch (Exception e){
+                } catch (Exception e) {
                     return new MessageToClient("statserror");
+                }
+            case "ratememe":
+                try {
+                    MessageToClient msg = new MessageToClient("ratememesuccess");
+                    if (db.rateMeme(messageToServer.getUsername(), messageToServer.getMemeId())) {
+                        return msg;
+                    } else return new MessageToClient("ratememeerror");
+                } catch (Exception e) {
+                    return new MessageToClient("ratememeerror");
                 }
             default:
                 return new MessageToClient("default");

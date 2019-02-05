@@ -26,14 +26,14 @@ public class ActiveSession {
     private String autisticPseudo = "";
     private String username;
 
-    private String responseHead = "";
-    private String responseBody = "";
+    private String responseHead;
+    private String responseBody;
 
     private ArrayList<Meme> memeList = new ArrayList<>();
 
     private String karma = "0";
     private String registerDate = "";
-    private String  numberOfMemes = "0";
+    private String numberOfMemes = "0";
     private String topMemeKarma = "0";
 
     public String getAutisticPseudo() {
@@ -153,10 +153,14 @@ public class ActiveSession {
                 break;
             case "statserror":
                 break;
+            case "ratememesuccess":
+                responseHead = "ratememesuccess";
+                break;
+            case "ratememeerror":
+                responseHead = "ratememeerror";
+                break;
 
         }
     }
-
-
 
 }

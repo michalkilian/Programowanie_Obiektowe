@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class MessageToServer implements Serializable {
     private final String command;
+    private int memeId;
     private Meme meme;
     private String username;
     private String password;
@@ -56,5 +57,13 @@ public class MessageToServer implements Serializable {
 
     public void setFilter(String filter) {
         this.filter = filter;
+    }
+
+    public int getMemeId() {
+        return memeId;
+    }
+
+    public void setMemeId(int memeId) {
+        this.memeId = memeId;
     }
 }
