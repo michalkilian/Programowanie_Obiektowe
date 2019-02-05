@@ -83,8 +83,8 @@ public class ClientSignInUp {
 
         } catch (EmptyFieldException e) {
             createResponseAlert("Can't Sign In", "Please insert login and password");
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (IOException | ClassNotFoundException | NullPointerException e) {
+            createResponseAlert("Can't Sign In", "Contact admins or try again later");
         }
         clearFields();
 
@@ -120,8 +120,8 @@ public class ClientSignInUp {
 
         } catch (EmptyFieldException e) {
             createResponseAlert("Can't Sign Up", "Please fill all fields");
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (IOException | ClassNotFoundException | NullPointerException e) {
+            createResponseAlert("Can't Sign Up", "Contact admins or try again later");
         }
         clearFields();
 
