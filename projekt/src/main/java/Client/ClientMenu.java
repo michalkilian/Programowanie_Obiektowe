@@ -42,7 +42,7 @@ public class ClientMenu implements Initializable {
      * Function called when scene is switched
      *
      * <p>
-     *     If user is not initialized (after starting application) function initializes it.
+     * If user is not initialized (after starting application) function initializes it.
      * </p>
      *
      * @param location
@@ -70,7 +70,7 @@ public class ClientMenu implements Initializable {
      * Switching scene to create meme scene
      *
      * <p>
-     *     This function is called when "create" button is pressed.
+     * This function is called when "create" button is pressed.
      * </p>
      *
      * @param event
@@ -95,7 +95,7 @@ public class ClientMenu implements Initializable {
      * Switching scene to browse memes scene
      *
      * <p>
-     *     This function is called when "browse" button is pressed.
+     * This function is called when "browse" button is pressed.
      * </p>
      *
      * @param event
@@ -121,7 +121,7 @@ public class ClientMenu implements Initializable {
      * Switching scene to user profile scene
      *
      * <p>
-     *     This function is called when "profile" button is pressed.
+     * This function is called when "profile" button is pressed.
      * </p>
      *
      * @param event

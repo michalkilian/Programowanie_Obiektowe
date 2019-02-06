@@ -71,7 +71,7 @@ public class ClientCreateMeme implements Initializable {
      * Function called when scene is switched
      *
      * <p>
-     *     Function sets content of gallery using sample memes stored in resource folder.
+     * Function sets content of gallery using sample memes stored in resource folder.
      * </p>
      *
      * @param location
@@ -120,7 +120,7 @@ public class ClientCreateMeme implements Initializable {
      * Switching scene to main menu
      *
      * <p>
-     *     This function is called when "back" button is pressed.
+     * This function is called when "back" button is pressed.
      * </p>
      *
      * @param event
@@ -152,7 +152,7 @@ public class ClientCreateMeme implements Initializable {
      * Switching scene to sign in/up
      *
      * <p>
-     *     This function is called when "sign in/sign up" button is pressed.
+     * This function is called when "sign in/sign up" button is pressed.
      * </p>
      *
      * @param event
@@ -186,7 +186,8 @@ public class ClientCreateMeme implements Initializable {
 
 
         if (selectedFile != null) {
-            pathToFile = selectedFile.getAbsolutePath();;
+            pathToFile = selectedFile.getAbsolutePath();
+            ;
             Image img = new Image(selectedFile.toURI().toString());
 
             ImageView mainImageView = new ImageView(img);
@@ -230,8 +231,8 @@ public class ClientCreateMeme implements Initializable {
      * Gather information from fields and send request to server for creating meme
      *
      * <p>
-     *     Function called when pressing "create MEME" button. Gathers information from FXML properties, create Meme
-     *     object and send in to server using {@link #user} property. Meme can't be created if photo or title is empty.
+     * Function called when pressing "create MEME" button. Gathers information from FXML properties, create Meme
+     * object and send in to server using {@link #user} property. Meme can't be created if photo or title is empty.
      * </p>
      *
      * @param event

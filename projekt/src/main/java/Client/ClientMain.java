@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 
 /**
  * Main class of client side of application
- *
  */
 public class ClientMain extends Application {
     public static void main(String[] args) {

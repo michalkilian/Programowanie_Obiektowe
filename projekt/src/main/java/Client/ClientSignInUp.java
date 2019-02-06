@@ -94,9 +94,9 @@ public class ClientSignInUp {
      * Prepare request and send request to server for log in as a given user
      *
      * <p>
-     *     Function gathers username and password from {@link #signInUsername} and {@link #signInPassword},
-     *     prepares message then send it using {@link #user} property. If successful active user is changed and pop up
-     *     is generated. Otherwise an error message shows up.
+     * Function gathers username and password from {@link #signInUsername} and {@link #signInPassword},
+     * prepares message then send it using {@link #user} property. If successful active user is changed and pop up
+     * is generated. Otherwise an error message shows up.
      * </p>
      *
      * @param event
@@ -130,9 +130,9 @@ public class ClientSignInUp {
      * Prepare request and send request to server for create user account
      *
      * <p>
-     *     Function gathers information about new user from FXML properties, prepares message then send it
-     *     using {@link #user} property. If successful new account is created, active user is changed and pop up
-     *     is generated. Otherwise an error message shows up. Passwords must be matching in both FXML passwords fields.
+     * Function gathers information about new user from FXML properties, prepares message then send it
+     * using {@link #user} property. If successful new account is created, active user is changed and pop up
+     * is generated. Otherwise an error message shows up. Passwords must be matching in both FXML passwords fields.
      * </p>
      *
      * @param event

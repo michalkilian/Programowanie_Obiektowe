@@ -8,7 +8,7 @@
  * </P>
  *
  * <p>
- *     FXML Files used to generate GUI are stored in resources as well as sample memes' images and other graphics
+ * FXML Files used to generate GUI are stored in resources as well as sample memes' images and other graphics
  * </p>
  *
  * @author Michal Kilian

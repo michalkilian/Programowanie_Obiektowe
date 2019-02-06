@@ -115,12 +115,12 @@ public class ActiveSession {
      *
      *
      * <p>
-     *     Messages are prepared in controllers and send by this method after establishing connection with server.
-     *     Returned message is handled by {@link #handleMessage(MessageToClient returnedMessage)}
+     * Messages are prepared in controllers and send by this method after establishing connection with server.
+     * Returned message is handled by {@link #handleMessage(MessageToClient returnedMessage)}
      *
      * </p>
-     * @param message MessageToServer containing all information needed to handle request
      *
+     * @param message MessageToServer containing all information needed to handle request
      * @throws IOException
      * @throws ClassNotFoundException when casting fails
      */
@@ -149,12 +149,13 @@ public class ActiveSession {
         }
     }
 
-    /**Set properties based on response retrieved from server
+    /**
+     * Set properties based on response retrieved from server
      *
-     * <P>
-     *     After successful reading response from server message is handled by this function. Depending on response
-     *     different properties are set. In most cases {@link #responseBody} and {@link #responseHead} which are used
-     *     to generate alerts. In some cases also information about active user.
+     * <p>
+     * After successful reading response from server message is handled by this function. Depending on response
+     * different properties are set. In most cases {@link #responseBody} and {@link #responseHead} which are used
+     * to generate alerts. In some cases also information about active user.
      * </P>
      *
      * @param returnedMessage message retrieved from server

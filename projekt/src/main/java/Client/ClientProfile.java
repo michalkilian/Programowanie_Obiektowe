@@ -83,7 +83,7 @@ public class ClientProfile implements Initializable {
      * Switching scene to main menu
      *
      * <p>
-     *     This function is called when "back" button is pressed.
+     * This function is called when "back" button is pressed.
      * </p>
      *
      * @param event
@@ -102,7 +102,6 @@ public class ClientProfile implements Initializable {
         controller.initUser(user);
         window.show();
     }
-
 
 
 }

@@ -54,7 +54,7 @@ public class ClientBrowseMemes implements Initializable {
      * Changing selected meme listener
      *
      * <p>
-     *     When selected meme is changed it sets properties values.
+     * When selected meme is changed it sets properties values.
      * </p>
      */
     private ChangeListener<Meme> picked = new ChangeListener<Meme>() {
@@ -94,7 +94,7 @@ public class ClientBrowseMemes implements Initializable {
      * Function called when scene is switched
      *
      * <p>
-     *     If user is defined it initialized memes already retrieved from server.
+     * If user is defined it initialized memes already retrieved from server.
      * </p>
      *
      * @param location
@@ -135,7 +135,7 @@ public class ClientBrowseMemes implements Initializable {
      * Switching scene to main menu
      *
      * <p>
-     *     This function is called when "back" button is pressed.
+     * This function is called when "back" button is pressed.
      * </p>
      *
      * @param event
@@ -160,8 +160,8 @@ public class ClientBrowseMemes implements Initializable {
      * Prepare request to server and retrieve memes with given title
      *
      * <p>
-     *     Function gathers information from {@link #memeNameTextField}, prepares message by setting command and
-     *     filter properties then send it using {@link #getMemes(MessageToServer)}
+     * Function gathers information from {@link #memeNameTextField}, prepares message by setting command and
+     * filter properties then send it using {@link #getMemes(MessageToServer)}
      * </p>
      *
      * @param event
@@ -180,8 +180,8 @@ public class ClientBrowseMemes implements Initializable {
      * Prepare request to server and retrieve memes created by given author
      *
      * <p>
-     *     Function gathers information about desired author from {@link #authorTextField}, prepares message by
-     *     setting command and filter properties then send it using {@link #getMemes(MessageToServer)}
+     * Function gathers information about desired author from {@link #authorTextField}, prepares message by
+     * setting command and filter properties then send it using {@link #getMemes(MessageToServer)}
      * </p>
      *
      * @param event
@@ -200,8 +200,8 @@ public class ClientBrowseMemes implements Initializable {
      * Prepare request to server and retrieve memes with given tag
      *
      * <p>
-     *     Function gathers information about desired tag from {@link #tagTextField}, prepares message by
-     *     setting command and filter properties then send it using {@link #getMemes(MessageToServer)}
+     * Function gathers information about desired tag from {@link #tagTextField}, prepares message by
+     * setting command and filter properties then send it using {@link #getMemes(MessageToServer)}
      * </p>
      *
      * @param event
@@ -220,7 +220,7 @@ public class ClientBrowseMemes implements Initializable {
      * Prepare request to server and retrieve all memes from database
      *
      * <p>
-     *     Function prepares message by setting command then send it using {@link #getMemes(MessageToServer)}
+     * Function prepares message by setting command then send it using {@link #getMemes(MessageToServer)}
      * </p>
      *
      * @param event
@@ -268,8 +268,8 @@ public class ClientBrowseMemes implements Initializable {
      * Prepare and send request to server for upvote selected meme
      *
      * <p>
-     *     Message to server consists of username used to retrieve userID from DB and memeID. If success meme rating
-     *     will be increased by 1. Guest user can't rate meme. User can't rate same meme twice.
+     * Message to server consists of username used to retrieve userID from DB and memeID. If success meme rating
+     * will be increased by 1. Guest user can't rate meme. User can't rate same meme twice.
      * </p>
      *
      * @param event
