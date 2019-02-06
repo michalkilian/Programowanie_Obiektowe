@@ -6,6 +6,16 @@ import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
 import java.io.*;
 
+/**
+ * Class representing meme object
+ *
+ * <p>
+ * It stores information about meme and implements custom serialization functions
+ * making it possible to send and retrieve through sockets
+ * </p>
+ *
+ * @author Michal Kilian
+ */
 public class Meme implements Serializable {
 
 
@@ -19,7 +29,16 @@ public class Meme implements Serializable {
     private int memeID;
     private String rating;
 
-
+    /**
+     * Constructor used when client creates meme and it has no upper and bottom text
+     *
+     * @param upperText  text that will be placed on the top of the picture
+     * @param bottomText text that will be placed on the bottom of the picture
+     * @param tag        text that will make meme possible to find by specific tag
+     * @param author     pseudonym of user that created meme
+     * @param title      title of the meme
+     * @param image      image of the meme
+     */
     public Meme(String upperText, String bottomText, String tag, String author, String title, Image image) {
         this.upperText = upperText;
         this.bottomText = bottomText;
@@ -29,6 +48,14 @@ public class Meme implements Serializable {
         this.image = image;
     }
 
+    /**
+     * Constructor used when server creates meme and it already has upper and bottom text
+     *
+     * @param tag    text that will make meme possible to find by specific tag
+     * @param author pseudonym of user that created meme
+     * @param title  title of the meme
+     * @param image  image of the meme
+     */
     public Meme(String tag, String author, String title, Image image) { //If meme already has upper and bottom text
         this.tag = tag;
         this.author = author;
@@ -36,11 +63,24 @@ public class Meme implements Serializable {
         this.image = image;
     }
 
+    /**
+     * Deserialize object
+     *
+     * @param s
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
         s.defaultReadObject();
         image = SwingFXUtils.toFXImage(ImageIO.read(s), null);
     }
 
+    /**
+     * Serialize object
+     *
+     * @param s
+     * @throws IOException
+     */
     private void writeObject(ObjectOutputStream s) throws IOException {
         s.defaultWriteObject();
         ImageIO.write(SwingFXUtils.fromFXImage(image, null), "jpg", s);

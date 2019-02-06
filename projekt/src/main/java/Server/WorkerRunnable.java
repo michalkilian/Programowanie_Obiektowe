@@ -14,7 +14,9 @@ import javafx.embed.swing.SwingFXUtils;
 
 import javax.imageio.ImageIO;
 
-
+/**
+ * Runnable worker class that handles 1 request
+ */
 public class WorkerRunnable implements Runnable {
 
     protected Socket clientSocket = null;
@@ -23,6 +25,9 @@ public class WorkerRunnable implements Runnable {
         this.clientSocket = clientSocket;
     }
 
+    /**
+     * Opens streams, reads and handles message from client then sends response
+     */
     public void run() {
         try {
             ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -40,6 +45,12 @@ public class WorkerRunnable implements Runnable {
         }
     }
 
+    /**
+     * Handles message from client and generate suitable response
+     *
+     * @param messageToServer
+     * @return Message to client with response property adequate to handling message result
+     */
     private MessageToClient handleMessage(MessageToServer messageToServer) {
 
         String pseudo;
@@ -141,6 +152,13 @@ public class WorkerRunnable implements Runnable {
         }
     }
 
+    /**
+     * Draws text and watermark on meme image
+     *
+     * @param messageToServer Message from which function reads top and bottom text, tag and author
+     * @return Meme with top and bottom text as well as watermark inserted
+     * @throws IOException
+     */
     private Meme createMeme(MessageToServer messageToServer) throws IOException {
         Meme meme = messageToServer.getMeme();
         BufferedImage image = SwingFXUtils.fromFXImage(meme.getImage(), null);

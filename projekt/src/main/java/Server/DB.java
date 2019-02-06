@@ -16,11 +16,25 @@ import javafx.scene.image.Image;
 
 import javax.imageio.ImageIO;
 
+/**
+ * Class capable of establishing connection with database, sending sql requests and returning values retrieved from DB
+ *
+ * @author Michal Kilian
+ */
 public class DB {
     private Connection conn = null;
     private Statement stmt = null;
     private ResultSet rs = null;
 
+    /**
+     * Establishes connection with DB
+     *
+     * <p>
+     * Function tries 3 times to connect with DB. Credentials hardcoded, pls don't mess with db.
+     * </p>
+     *
+     * @throws SQLException when cannot establish
+     */
     public void connect() throws SQLException {
         int numbOfAttempts = 0;
         while (numbOfAttempts < 3) {
@@ -52,6 +66,12 @@ public class DB {
     }
 
 
+    /**
+     * Retrieve all memes from database
+     *
+     * @return ArrayList of memes
+     * @throws SQLException when connecting to database or executing query fails
+     */
     public ArrayList<Meme> getAll() throws SQLException {
         ArrayList<Meme> memeList = new ArrayList<>();
         try {
@@ -64,13 +84,18 @@ public class DB {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            // zwalniamy zasoby, które nie będą potrzebne
             cleanRes();
         }
         return memeList;
     }
 
-
+    /**
+     * Retrieve meme from database with given title
+     *
+     * @param title title of meme that is going to be retrieved from database
+     * @return ArrayList of memes
+     * @throws SQLException when connecting to database or executing query fails
+     */
     public ArrayList<Meme> getSelectedTitle(String title) throws SQLException {
         ArrayList<Meme> memeList = new ArrayList<>();
         try {
@@ -87,12 +112,18 @@ public class DB {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            // zwalniamy zasoby, które nie będą potrzebne
             cleanRes();
         }
         return memeList;
     }
 
+    /**
+     * Retrieve memes from database with given tag
+     *
+     * @param tag tag of memes that are going to be retrieved from database
+     * @return ArrayList of memes
+     * @throws SQLException when connecting to database or executing query fails
+     */
     public ArrayList<Meme> getSelectedTag(String tag) throws SQLException {
         ArrayList<Meme> memeList = new ArrayList<>();
         try {
@@ -109,12 +140,18 @@ public class DB {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            // zwalniamy zasoby, które nie będą potrzebne
             cleanRes();
         }
         return memeList;
     }
 
+    /**
+     * Retrieve memes from database created by given author
+     *
+     * @param author author of memes user wants to retrieve
+     * @return ArrayList of memes
+     * @throws SQLException when connecting to database or executing query fails
+     */
     public ArrayList<Meme> getSelectedAuthor(String author) throws SQLException {
         ArrayList<Meme> memeList = new ArrayList<>();
         try {
@@ -131,12 +168,23 @@ public class DB {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            // zwalniamy zasoby, które nie będą potrzebne
             cleanRes();
         }
         return memeList;
     }
 
+    /**
+     * Sign in with given credentials
+     *
+     * <p>
+     * Function tests if given credentials are identical with credentials in database. Given password and password
+     * in database are in plaintext because security.
+     * </P>
+     *
+     * @param username
+     * @param passwd
+     * @return logged user pseudonym if signing was successful null otherwise
+     */
     public String signIn(String username, String passwd) {
         try {
             connect();
@@ -156,6 +204,14 @@ public class DB {
         return null;
     }
 
+    /**
+     * Create new account with given credentials and pseudonym
+     *
+     * @param username
+     * @param passwd
+     * @param autisticpseudo
+     * @return true if creating account was successful false otherwise
+     */
     public boolean signUp(String username, String passwd, String autisticpseudo) {
         try {
             connect();
@@ -164,7 +220,6 @@ public class DB {
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
             Date date = new Date();
             java.sql.Date sqlData = new java.sql.Date(date.getTime());
-
 
             PreparedStatement statement = conn.prepareStatement("INSERT INTO users (username, autisticpseudo, passwd, registerdate)" + " VALUES (?,?,?,?)");
             statement.setString(1, (username));
@@ -181,6 +236,13 @@ public class DB {
         return false;
     }
 
+    /**
+     * Compares provided password with password in database
+     *
+     * @param passwd given password
+     * @return true if passwords match false otherwise
+     * @throws SQLException
+     */
     private boolean checkSigning(String passwd) throws SQLException {
         rs.next();
         if (rs.getString(4).equals(passwd)) {
@@ -189,14 +251,17 @@ public class DB {
         return false;
     }
 
-
+    /**
+     * Inserts given meme to database
+     *
+     * @param meme meme that is going to be inserted to database
+     * @throws SQLException
+     */
     public void addMeme(Meme meme) throws SQLException {
         try {
             connect();
             stmt = conn.createStatement();
 
-            // Wyciagamy wszystkie pola z kolumny name
-            // znajdujące się w tabeli users
             PreparedStatement statement = conn.prepareStatement("INSERT INTO memes (autisticpseudo, title, tag, meme)" + "VALUES (?,?,?,?)");
             statement.setString(1, meme.getAuthor());
             statement.setString(2, meme.getTitle());
@@ -210,12 +275,17 @@ public class DB {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            // zwalniamy zasoby, które nie będą potrzebne
             cleanRes();
         }
     }
 
-
+    /**
+     * Retrieves information about memes from database and adds them to list of memes
+     *
+     * @param memeList ArrayList of memes
+     * @throws SQLException
+     * @throws IOException
+     */
     private void addMemesFromQueryToList(ArrayList<Meme> memeList) throws SQLException, IOException {
         while (rs.next()) {
 
@@ -233,6 +303,12 @@ public class DB {
         }
     }
 
+    /**
+     * Retrieve stats about given user from database
+     *
+     * @param username
+     * @return HashMap with keys "karma", "numberOfMemes", "registerDate", "topMeme" and values corresponding to them
+     */
     public HashMap<String, String> getStats(String username) {
         HashMap<String, String> stats = new HashMap<>();
         try {
@@ -266,6 +342,13 @@ public class DB {
         return stats;
     }
 
+    /**
+     * Insert record to userratings table representing meme's upvote
+     *
+     * @param username username of user who upvoted meme
+     * @param memeID   ID of upvoted meme
+     * @return true if upvote was successfully inserted false otherwise
+     */
     public boolean rateMeme(String username, int memeID) {
         boolean result = false;
         try {
@@ -293,6 +376,9 @@ public class DB {
     }
 
 
+    /**
+     * Closes statement and result set
+     */
     private void cleanRes() {
         if (rs != null) {
             try {

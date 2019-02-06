@@ -3,14 +3,80 @@ package GeneralClasses;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Class that stores information that should be sent to client after handling request
+ *
+ * @author Michal Kilian
+ */
 public class MessageToClient implements Serializable {
+
+
+    /**
+     * Server response based on handling request result
+     *
+     * <p>
+     * Example of responses: "signinsucces", "signuperror".
+     * </p>
+     */
     private final String response;
+
+    /**
+     * Active user pseudonym
+     *
+     * <p>
+     * This field is used after successful signing in or signing up
+     * </p>
+     */
     private String autisticPseudo;
+
+    /**
+     * Active user username
+     *
+     * <p>
+     * This field is used after successful signing in or signing up
+     * </p>
+     */
     private String username;
+
+    /**
+     * List of memes retrieved from SQL request
+     */
     private ArrayList<Meme> memeList;
+
+    /**
+     * Sum of active user memes' likes
+     *
+     * <p>
+     * This field is used when sending active user statistics
+     * </p>
+     */
     private String karma;
+
+    /**
+     * Date when active user created account
+     *
+     * <p>
+     * This field is used when sending active user statistics
+     * </p>
+     */
     private String registerDate;
+
+    /**
+     * Number of memes created by active user
+     *
+     * <p>
+     * This field is used when sending active user statistics
+     * </p>
+     */
     private String numberOfMemes;
+
+    /**
+     * Max value of likes obtained by meme created by active user
+     *
+     * <p>
+     * This field is used when sending active user statistics
+     * </p>
+     */
     private String topMemeKarma;
 
 

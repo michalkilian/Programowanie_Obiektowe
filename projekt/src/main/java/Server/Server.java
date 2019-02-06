@@ -6,6 +6,12 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
+/**
+ * Runnable server class which uses thread pool to handle incoming requests
+ *
+ * @author Michal Kilian
+ */
 public class Server implements Runnable {
     protected int serverPort;
     protected ServerSocket serverSocket = null;

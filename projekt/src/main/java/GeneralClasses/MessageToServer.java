@@ -2,14 +2,52 @@ package GeneralClasses;
 
 import java.io.Serializable;
 
+/**
+ * Class that stores information that should be sent to server as a request to handle
+ *
+ * @author Michal Kilian
+ */
 public class MessageToServer implements Serializable {
+    /**
+     * Request to handle by server
+     *
+     * <p>
+     * Example of requests: "creatememe", "signup"
+     * </p>
+     */
     private final String command;
+
+    /**
+     * ID of meme used when rating meme
+     */
     private int memeId;
+
+    /**
+     * Meme object used when creating meme
+     */
     private Meme meme;
-    private String username;
-    private String password;
-    private String autisticPseudo;
+
+    /**
+     * Filter used when user want just part of memes from DB
+     */
     private String filter;
+
+    //Info about user
+    /**
+     *
+     */
+    private String username;
+
+    /**
+     *
+     */
+    private String password;
+
+    /**
+     *
+     */
+    private String autisticPseudo;
+
 
     public MessageToServer(String command) {
         this.command = command;
