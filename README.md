@@ -1,6 +1,7 @@
 # Programowanie_Obiektowe
 Repozytorium na zajęcia z programowania obiektowego AGH Informatyka semestr 3
-
+<img src="1.png"><br>
+<img src="2.png"><br>
 ## Zawartość
 
 ### Lab1:
