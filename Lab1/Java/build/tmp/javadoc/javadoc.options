@@ -1,0 +1,9 @@
+-classpath 'C:\\Users\\test\\0Programowanie\\Java\\Programowanie_Obiektowe\\Lab1\\Java\\build\\classes\\java\\main;C:\\Users\\test\\0Programowanie\\Java\\Programowanie_Obiektowe\\Lab1\\Java\\build\\resources\\main'
+-d 'C:\\Users\\test\\0Programowanie\\Java\\Programowanie_Obiektowe\\Lab1\\Java\\build\\docs\\javadoc'
+-doctitle 'Java API'
+-quiet 
+-windowtitle 'Java API'
+'C:\\Users\\test\\0Programowanie\\Java\\Programowanie_Obiektowe\\Lab1\\Java\\src\\main\\java\\pl\\edu\\agh\\datastructures\\package-info.java'
+'C:\\Users\\test\\0Programowanie\\Java\\Programowanie_Obiektowe\\Lab1\\Java\\src\\main\\java\\pl\\edu\\agh\\datastructures\\Vector.java'
+'C:\\Users\\test\\0Programowanie\\Java\\Programowanie_Obiektowe\\Lab1\\Java\\src\\main\\java\\pl\\edu\\agh\\Main.java'
+'C:\\Users\\test\\0Programowanie\\Java\\Programowanie_Obiektowe\\Lab1\\Java\\src\\main\\java\\pl\\edu\\agh\\package-info.java'
